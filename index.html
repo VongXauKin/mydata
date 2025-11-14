@@ -13,36 +13,39 @@
         <p>Truy cập nhanh các thư mục và dự án quan trọng</p>
     </header>
 
+    <section id="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm thư mục, dự án, hoặc mô tả..." onkeyup="filterFolders()">
+    </section>
     <section id="directory">
         <h2>📂 Danh Mục Thư Mục</h2>
         
         <div class="folder-list">
-            <a href="01_PRODUCTION-PROJECTS/" class="folder-item">
+            <a href="01_PRODUCTION-PROJECTS/" class="folder-item" data-search="01_PRODUCTION & PROJECTS Các sản phẩm, dự án đang hoạt động và đã hoàn thành.">
                 <span class="folder-name">01_PRODUCTION & PROJECTS</span>
                 <span class="folder-desc">Các sản phẩm, dự án đang hoạt động và đã hoàn thành.</span>
             </a>
 
-            <a href="02_ADMIN-TONG-VU/" class="folder-item">
+            <a href="02_ADMIN-TONG-VU/" class="folder-item" data-search="02_ADMIN & TỔNG VỤ Tài liệu hành chính, báo cáo, quản lý nội bộ.">
                 <span class="folder-name">02_ADMIN & TỔNG VỤ</span>
                 <span class="folder-desc">Tài liệu hành chính, báo cáo, quản lý nội bộ.</span>
             </a>
             
-            <a href="03_TAI-LIEU-CHUNG/" class="folder-item">
+            <a href="03_TAI-LIEU-CHUNG/" class="folder-item" data-search="03_TÀI LIỆU CHUNG & KHÁC Tài liệu tham khảo, quy trình, kiến thức nền tảng.">
                 <span class="folder-name">03_TÀI LIỆU CHUNG & KHÁC</span>
                 <span class="folder-desc">Tài liệu tham khảo, quy trình, kiến thức nền tảng.</span>
             </a>
 
-            <a href="04_MEDIA-BACKUP/" class="folder-item">
+            <a href="04_MEDIA-BACKUP/" class="folder-item" data-search="04_MEDIA & BACKUP Ảnh, video, tệp đa phương tiện, và bản sao lưu quan trọng.">
                 <span class="folder-name">04_MEDIA & BACKUP</span>
                 <span class="folder-desc">Ảnh, video, tệp đa phương tiện, và bản sao lưu quan trọng.</span>
             </a>
             
-            <a href="05_INBOX-FILE-CU/" class="folder-item">
+            <a href="05_INBOX-FILE-CU/" class="folder-item" data-search="05_INBOX (FILE CŨ & LỘN XỘN) Nơi chứa các tệp tạm thời, chưa được tổ chức.">
                 <span class="folder-name">05_INBOX (FILE CŨ & LỘN XỘN)</span>
                 <span class="folder-desc">Nơi chứa các tệp tạm thời, chưa được tổ chức.</span>
             </a>
 
-            <a href="06_SCREENSHOTS-IMAGES/" class="folder-item">
+            <a href="06_SCREENSHOTS-IMAGES/" class="folder-item" data-search="06_SCREENSHOTS & IMAGES Ảnh chụp màn hình, ảnh nhỏ dùng nhanh.">
                 <span class="folder-name">06_SCREENSHOTS & IMAGES</span>
                 <span class="folder-desc">Ảnh chụp màn hình, ảnh nhỏ dùng nhanh.</span>
             </a>
@@ -55,5 +58,29 @@
         <p>&copy; 2025 Data Repository. Hosted on GitHub Pages.</p>
     </footer>
 
-</body>
+    <script>
+        function filterFolders() {
+            // Lấy giá trị tìm kiếm và chuyển thành chữ thường
+            let input = document.getElementById('searchInput');
+            let filter = input.value.toUpperCase();
+            
+            // Lấy danh sách các mục thư mục
+            let folderList = document.getElementsByClassName('folder-item');
+
+            // Lặp qua từng mục
+            for (let i = 0; i < folderList.length; i++) {
+                let folder = folderList[i];
+                // Lấy nội dung tìm kiếm đã được gán (data-search)
+                let searchContent = folder.getAttribute('data-search').toUpperCase();
+
+                // Kiểm tra xem nội dung tìm kiếm có chứa từ khóa hay không
+                if (searchContent.includes(filter)) {
+                    folder.style.display = "flex"; // Hiện mục
+                } else {
+                    folder.style.display = "none"; // Ẩn mục
+                }
+            }
+        }
+    </script>
+    </body>
 </html>
