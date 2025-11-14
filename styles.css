@@ -44,6 +44,31 @@ section h2 {
     font-size: 1.5em;
 }
 
+/* Thêm style cho thanh tìm kiếm */
+#search-bar {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto; /* Điều chỉnh margin để nằm giữa */
+    padding: 0 20px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    outline: none;
+}
+
 /* Định dạng Danh sách Thư mục */
 .folder-list {
     display: flex;
