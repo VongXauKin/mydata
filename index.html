@@ -3,60 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kho Dữ Liệu Cá Nhân - Repository</title>
+    <title>Kho Lưu Trữ Hình Ảnh Cá Nhân</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <header>
-        <h1>📁 KHO DỮ LIỆU CÔNG VIỆC CÁ NHÂN</h1>
-        <p>Truy cập nhanh các thư mục và dự án quan trọng</p>
+        <h1>📁 KHO LƯU TRỮ HÌNH ẢNH CÁ NHÂN</h1>
+        <p>Truy cập nhanh các hình ảnh cá nhân</p>
     </header>
 
     <section id="search-bar">
-        <input type="text" id="searchInput" placeholder="Tìm kiếm thư mục, dự án, hoặc mô tả..." onkeyup="filterFolders()">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm hình ảnh theo các mốc sự kiện, thời gian..." onkeyup="filterFolders()">
     </section>
     <section id="directory">
-        <h2>📂 Danh Mục Thư Mục</h2>
+        <h2>📂 Danh Sách Thư Mục</h2>
         
         <div class="folder-list">
-            <a href="01_PRODUCTION-PROJECTS/" class="folder-item" data-search="01_PRODUCTION & PROJECTS Các sản phẩm, dự án đang hoạt động và đã hoàn thành.">
-                <span class="folder-name">01_PRODUCTION & PROJECTS</span>
-                <span class="folder-desc">Các sản phẩm, dự án đang hoạt động và đã hoàn thành.</span>
+            <a href="01_HÌNH ẢNH Kỉ NIỆM/" class="folder-item" data-search="01_HÌNH ẢNH Kỉ NIỆM Các hình ảnh kỉ niệm theo các mốc sự kiện, thời gian.">
+                <span class="folder-name">01_HÌNH ẢNH Kỉ NIỆM</span>
+                <span class="folder-desc">Các hình ảnh kỉ niệm theo các mốc sự kiện, thời gian.</span>
             </a>
             <div class="subfolder-list">
-                <a href="01_PRODUCTION-PROJECTS/KẾ HOẠCH & CHI PHÍ/" class="subfolder-item" data-search="KẾ HOẠCH & CHI PHÍ">
+                <a href="01_HÌNH ẢNH Kỉ NIỆM/KẾ HOẠCH & CHI PHÍ/" class="subfolder-item" data-search="KẾ HOẠCH & CHI PHÍ">
                     ▶︎ KẾ HOẠCH & CHI PHÍ
                 </a>
-                <a href="01_PRODUCTION-PROJECTS/TỔNG VỤ SẢN XUẤT/" class="subfolder-item" data-search="TỔNG VỤ SẢN XUẤT">
+                <a href="01_HÌNH ẢNH Kỉ NIỆM/TỔNG VỤ SẢN XUẤT/" class="subfolder-item" data-search="TỔNG VỤ SẢN XUẤT">
                     ▶︎ TỔNG VỤ SẢN XUẤT
                 </a>
             </div>
 
-            <a href="02_ADMIN-TONG-VU/" class="folder-item" data-search="02_ADMIN & TỔNG VỤ Tài liệu hành chính, báo cáo, quản lý nội bộ.">
-                <span class="folder-name">02_ADMIN & TỔNG VỤ</span>
-                <span class="folder-desc">Tài liệu hành chính, báo cáo, quản lý nội bộ.</span>
+            <a href="02_HÌNH ẢNH ĐÁM CƯỚI/" class="folder-item" data-search="02_HÌNH ẢNH ĐÁM CƯỚI Các hình ảnh đám cưới nhà trai, nhà gái.">
+                <span class="folder-name">02_HÌNH ẢNH ĐÁM CƯỚI</span>
+                <span class="folder-desc">Các hình ảnh đám cưới nhà trai, nhà gái.</span>
             </a>
             
-            <a href="03_TAI-LIEU-CHUNG/" class="folder-item" data-search="03_TÀI LIỆU CHUNG & KHÁC Tài liệu tham khảo, quy trình, kiến thức nền tảng.">
-                <span class="folder-name">03_TÀI LIỆU CHUNG & KHÁC</span>
-                <span class="folder-desc">Tài liệu tham khảo, quy trình, kiến thức nền tảng.</span>
+            <a href="03_HÌNH ẢNH CHUNG/" class="folder-item" data-search="03_HÌNH ẢNH CHUNG Các hình ảnh chung trong tương lai.">
+                <span class="folder-name">03_HÌNH ẢNH CHUNG</span>
+                <span class="folder-desc">Các hình ảnh chung trong tương lai.</span>
             </a>
 
-            <a href="04_MEDIA-BACKUP/" class="folder-item" data-search="04_MEDIA & BACKUP Ảnh, video, tệp đa phương tiện, và bản sao lưu quan trọng.">
-                <span class="folder-name">04_MEDIA & BACKUP</span>
-                <span class="folder-desc">Ảnh, video, tệp đa phương tiện, và bản sao lưu quan trọng.</span>
-            </a>
-            
-            <a href="05_INBOX-FILE-CU/" class="folder-item" data-search="05_INBOX (FILE CŨ & LỘN XỘN) Nơi chứa các tệp tạm thời, chưa được tổ chức.">
-                <span class="folder-name">05_INBOX (FILE CŨ & LỘN XỘN)</span>
-                <span class="folder-desc">Nơi chứa các tệp tạm thời, chưa được tổ chức.</span>
-            </a>
-
-            <a href="06_SCREENSHOTS-IMAGES/" class="folder-item" data-search="06_SCREENSHOTS & IMAGES Ảnh chụp màn hình, ảnh nhỏ dùng nhanh.">
-                <span class="folder-name">06_SCREENSHOTS & IMAGES</span>
-                <span class="folder-desc">Ảnh chụp màn hình, ảnh nhỏ dùng nhanh.</span>
-            </a>
         </div>
         
         <p class="note">Để xem nội dung các thư mục, bạn cần tạo các thư mục tương ứng và chứa tệp tin trong Repository GitHub.</p>
