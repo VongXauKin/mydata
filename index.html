@@ -65,10 +65,10 @@
                 <span class="folder-desc">Các hình ảnh đám cưới nhà trai, nhà gái.</span>
             </a>
             <div class="subfolder-list">
-                <a href="02_HÌNH ẢNH ĐÁM CƯỚI//NHÀ GÁI 21-09-2024/" class="subfolder-item" data-search="NHÀ GÁI 21-09-2024">
+                <a href="02_HÌNH ẢNH ĐÁM CƯỚI/NHÀ GÁI 21-09-2024/" class="subfolder-item" data-search="NHÀ GÁI 21-09-2024">
                     ▶︎ NHÀ GÁI 21-09-2024
                 </a>
-                <a href="02_HÌNH ẢNH ĐÁM CƯỚI//NHÀ TRAI 22-09-2024/" class="subfolder-item" data-search="NHÀ TRAI 22-09-2024">
+                <a href="02_HÌNH ẢNH ĐÁM CƯỚI/NHÀ TRAI 22-09-2024/" class="subfolder-item" data-search="NHÀ TRAI 22-09-2024">
                     ▶︎ NHÀ TRAI 22-09-2024
                 </a>
             </div>
@@ -89,25 +89,46 @@
 
     <script>
         function filterFolders() {
-            // Lấy giá trị tìm kiếm và chuyển thành chữ thường
             let input = document.getElementById('searchInput');
             let filter = input.value.toUpperCase();
             
-            // Lấy danh sách các mục thư mục
-            let folderList = document.getElementsByClassName('folder-item');
-
-            // Lặp qua từng mục
-            for (let i = 0; i < folderList.length; i++) {
-                let folder = folderList[i];
-                // Lấy nội dung tìm kiếm đã được gán (data-search)
+            // Lấy TẤT CẢ các mục cha (và là các mục để bắt đầu kiểm tra)
+            let folderItems = document.querySelectorAll('.folder-list > a.folder-item'); 
+            
+            // Lặp qua từng mục cha
+            folderItems.forEach(folder => {
                 let searchContent = folder.getAttribute('data-search').toUpperCase();
+                let isMatch = searchContent.includes(filter);
 
-                // Kiểm tra xem nội dung tìm kiếm có chứa từ khóa hay không
-                if (searchContent.includes(filter)) {
-                    folder.style.display = "flex"; // Hiện mục
+                // Lấy khối chứa thư mục con (div.subfolder-list) ngay sau thư mục cha
+                let subfolderBlock = folder.nextElementSibling; 
+
+                // 1. ẨN/HIỆN THƯ MỤC CHA
+                if (isMatch || filter === "") {
+                    folder.style.display = "flex";
                 } else {
-                    folder.style.display = "none"; // Ẩn mục
+                    folder.style.display = "none";
                 }
+
+                // 2. XỬ LÝ KHỐI THƯ MỤC CON
+                // Nếu khối con tồn tại và không phải là thư mục cha tiếp theo
+                if (subfolderBlock && subfolderBlock.classList.contains('subfolder-list')) {
+                    // Nếu thư mục cha match hoặc nếu ô tìm kiếm rỗng, thì hiện khối con
+                    if (isMatch || filter === "") {
+                        subfolderBlock.style.display = "flex";
+                    } else {
+                        // Nếu thư mục cha bị ẩn, thì ẩn luôn khối con
+                        subfolderBlock.style.display = "none";
+                    }
+                }
+            });
+            
+            // Bổ sung: Nếu ô tìm kiếm rỗng, đảm bảo tất cả đều hiện
+            if (filter === "") {
+                 // Đảm bảo tất cả các subfolder-list hiện lên khi không có từ khóa
+                document.querySelectorAll('.subfolder-list').forEach(block => {
+                    block.style.display = "flex";
+                });
             }
         }
     </script>
