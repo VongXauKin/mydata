@@ -95,6 +95,29 @@ section h2 {
     box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
 }
 
+/* BẮT ĐẦU STYLE CHO THƯ MỤC CON */
+.subfolder-list {
+    display: flex; /* Dùng flex để dễ ẩn/hiện và sắp xếp theo chiều dọc */
+    flex-direction: column;
+    gap: 5px; 
+    margin-left: 40px; /* **ĐỘ THỤT VÀO QUAN TRỌNG NHẤT** */
+    margin-top: -5px; 
+    margin-bottom: 5px;
+}
+
+.subfolder-item {
+    display: block;
+    padding: 8px 15px;
+    background-color: #f0f8ff; 
+    border-left: 3px solid #007bff;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #495057;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+/* KẾT THÚC STYLE CHO THƯ MỤC CON */
+
 .folder-name {
     font-weight: bold;
     font-size: 1.1em;
