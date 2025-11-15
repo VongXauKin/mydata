@@ -97,26 +97,35 @@ section h2 {
 
 /* BẮT ĐẦU STYLE CHO THƯ MỤC CON */
 .subfolder-list {
-    display: flex; /* Dùng flex để dễ ẩn/hiện và sắp xếp theo chiều dọc */
-    flex-direction: column;
-    gap: 5px; 
+    display: block; /* SỬA: Thay thế 'flex' bằng 'block' để áp dụng margin-left tốt hơn trong ngữ cảnh này */
+    /* Tuy nhiên, bạn VẪN muốn sắp xếp nội dung con theo cột, nên hãy thêm lại display: flex bên trong nó */
+    
+    /* Thiết lập cho khối bọc bên ngoài (subfolder-list) */
     margin-left: 40px; /* **ĐỘ THỤT VÀO QUAN TRỌNG NHẤT** */
     margin-top: -5px; 
     margin-bottom: 5px;
+    
+    /* Cấu trúc sắp xếp nội dung bên trong */
+    
+    /* NHẮC LẠI: Vì đã dùng display: block ở trên, không cần dùng display: flex ở đây nếu không có nhu cầu đặc biệt.
+       Nhưng để giữ lại ý định sắp xếp nội dung con theo cột, ta thêm các style sau */
+    padding: 0;
+    list-style: none; /* Đảm bảo không có dấu chấm list */
 }
 
+/* Áp dụng display: flex cho mục con để đảm bảo sắp xếp nếu bạn muốn */
 .subfolder-item {
-    display: block;
+    display: block; /* Giữ là block hoặc flex tùy ý, nhưng block thường dễ xử lý hơn cho các liên kết */
     padding: 8px 15px;
-    background-color: #f0f8ff; 
+    background-color: #f0f8ff;  
     border-left: 3px solid #007bff;
     border-radius: 4px;
     text-decoration: none;
     color: #495057;
     font-size: 0.9em;
     transition: background-color 0.2s;
+    margin-top: 5px; /* Thêm margin giữa các mục con */
 }
-/* KẾT THÚC STYLE CHO THƯ MỤC CON */
 
 .folder-name {
     font-weight: bold;
