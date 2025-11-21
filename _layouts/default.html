@@ -2,38 +2,48 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>{{ page.title }} | Kho Lưu Trữ</title>
-    <link rel="stylesheet" href="/assets/style.css"> 
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | {{ site.title }}</title>
+    </head>
 <body>
+
     <header>
         <h1>{{ site.title }}</h1>
         <p>{{ site.description }}</p>
     </header>
 
-    <section>
+    <main>
         {{ content }}
         
-        <h2>Danh sách các File (Tự động)</h2>
-        <ul>
-        {% for item in site.static_files %}
-            {% assign filename = item.path | split: '/' | last %}
+        <section id="directory">
+            <h2>📂 Danh Sách File & Thư Mục (Tự động)</h2>
+            <p>Bấm vào liên kết để truy cập file hoặc thư mục con.</p>
             
-            {% comment %} Chỉ hiển thị các file không phải là cấu hình {% endcomment %}
-            {% unless filename contains "_" or filename contains "." %} 
-                <li>
-                    <a href="{{ item.path | relative_url }}">
-                        {{ item.path }}
-                    </a>
-                </li>
-            {% endunless %}
-        {% endfor %}
-        </ul>
-        
-    </section>
+            <ul>
+            {% comment %} Vòng lặp Liquid để duyệt qua tất cả các file tĩnh {% endcomment %}
+            {% assign root_items = site.static_files | where: "dir", "/" %}
+            
+            {% for item in root_items %}
+                {% assign filename = item.path | split: '/' | last %}
+                
+                {% comment %} Loại bỏ các file cấu hình và file tạm thời {% endcomment %}
+                {% unless filename contains "_" or filename contains "." or filename == "README.md" or filename == "styles.css" or item.path == "/styles.css" or filename == "index.html" or filename == "index.md" %} 
+                    <li>
+                        <a href="{{ item.path | relative_url }}">
+                            {{ item.path | remove: "/" | remove: "/index.html" }}
+                        </a>
+                    </li>
+                {% endunless %}
+            {% endfor %}
+            </ul>
+            
+            <p class="note">Lưu ý: Các liên kết trên bao gồm tất cả các file/thư mục cấp 1 mà Jekyll tìm thấy.</p>
+        </section>
+    </main>
 
     <footer>
-        <p>&copy; 2025 Hosted by GitHub Pages/Jekyll.</p>
+        <p>&copy; 2025 {{ site.title }}</p>
     </footer>
+
 </body>
 </html>
