@@ -1,0 +1,39 @@
+name: Generate Index and Deploy
+
+on:
+  push:
+    branches:
+      - main # Chạy mỗi khi có commit lên nhánh 'main'
+
+jobs:
+  generate_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run script to generate index.md
+        run: python _scripts/generate_index.py
+
+      - name: Set up Ruby and Gems for Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.x'
+          bundler-cache: true 
+
+      - name: Install dependencies (Nếu cần)
+        run: gem install jekyll
+        
+      - name: Build and Deploy (Tùy thuộc vào cách bạn triển khai GitHub Pages)
+        # Nếu bạn dùng cấu hình Pages mặc định:
+        run: jekyll build
+        
+      - name: Upload artifact (Để Jekyll Pages triển khai)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './_site'
