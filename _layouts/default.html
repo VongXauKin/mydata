@@ -8,7 +8,7 @@
     
     {% for item in site.static_files %}
         
-        {% comment %} Lấy tên thư mục/file cấp 1 (ví dụ: "01_HÌNH ẢNH Kỉ NIỆM") {% endcomment %}
+        {% comment %} Lấy tên thư mục/file cấp 1 {% endcomment %}
         {% assign parts = item.path | remove_first: "/" | split: "/" %}
         {% assign top_level_name = parts | first %}
         
@@ -18,11 +18,10 @@
         {% unless top_level_name contains "/" %}
 
             {% comment %} 
-            Điều kiện 2: Loại bỏ các file/thư mục cấu hình CỦA JEKYLL (bắt đầu bằng gạch dưới hoặc là file cốt lõi)
-            LƯU Ý: ĐÃ XÓA LỌC DẤU CHẤM VÀ CÁC DẤU LỌC QUÁ KHẮT KHE KHÁC
+            Điều kiện 2: Loại bỏ các file/thư mục cấu hình BẮT ĐẦU bằng dấu gạch dưới, và các file cốt lõi
             {% endcomment %}
             {% assign is_jekyll_config = false %}
-            {% if top_level_name contains "_" or top_level_name == "Gemfile" or top_level_name == "LICENSE" or top_level_name == "index.html" or top_level_name == "index.md" or top_level_name == "styles.css" or top_level_name == "README.md" %}
+            {% if top_level_name startswith "_" or top_level_name == "Gemfile" or top_level_name == "LICENSE" or top_level_name == "index.html" or top_level_name == "index.md" or top_level_name == "styles.css" or top_level_name == "README.md" %}
                  {% assign is_jekyll_config = true %}
             {% endif %}
 
