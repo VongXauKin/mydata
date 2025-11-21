@@ -1,35 +1,59 @@
-<section id="directory">
-    <h2>📂 Danh Sách File & Thư Mục (Tự động)</h2>
-    <p>Bấm vào liên kết để truy cập file hoặc thư mục con.</p>
-    
-    <ul>
-    {% comment %}
-    Vòng lặp Liquid duyệt qua tất cả các file tĩnh (bao gồm thư mục)
-    {% endcomment %}
-    
-    {% for item in site.static_files %}
-        
-        {% assign filename = item.path | remove_first: "/" %}
-        
-        {% comment %} 
-        Điều kiện 1: Đảm bảo chỉ hiển thị các mục ở cấp thư mục gốc (không có dấu / thứ 2)
-        {% endcomment %}
-        {% unless filename contains "/" %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | {{ site.title }}</title>
+    </head>
+<body>
 
-            {% comment %} 
-            Điều kiện 2: Loại bỏ các file cấu hình và file ẩn.
-            {% endcomment %}
-            {% unless filename contains "_" or filename == "index.html" or filename == "index.md" or filename == "README.md" or filename contains "LICENSE" or filename == "styles.css" %} 
-                <li>
-                    <a href="{{ item.path | relative_url }}">
-                        {{ filename }}
-                    </a>
-                </li>
-            {% endunless %}
+    <header>
+        <h1>{{ site.title }}</h1>
+        <p>{{ site.description }}</p>
+    </header>
+
+    <main>
+        {{ content }}
+        
+        <section id="directory">
+            <h2>📂 Danh Sách Thư Mục & File (Cấp 1 - Tự động)</h2>
+            <p>Bấm vào liên kết để truy cập file hoặc thư mục con. (Vòng lặp đã được tinh chỉnh)</p>
             
-        {% endunless %}
-    {% endfor %}
-    </ul>
-    
-    <p class="note">Lưu ý: Các liên kết trên bao gồm tất cả các file/thư mục cấp 1 mà Jekyll tìm thấy.</p>
-</section>
+            <ul>
+            {% comment %} Sử dụng site.static_files để duyệt qua tất cả các file tĩnh {% endcomment %}
+            {% assign listed_items = "" | split: ',' %}
+            
+            {% for item in site.static_files %}
+                
+                {% comment %} Lấy tên thư mục/file cấp 1 (ví dụ: "01_HÌNH ẢNH Kỉ NIỆM") {% endcomment %}
+                {% assign parts = item.path | remove_first: "/" | split: "/" %}
+                {% assign top_level_name = parts | first %}
+                
+                {% comment %} Lọc bỏ các file cấu hình và kiểm tra xem đã liệt kê chưa {% endcomment %}
+                {% assign is_config = false %}
+                {% if top_level_name contains "_" or top_level_name contains "." or top_level_name == "styles.css" or top_level_name == "index.html" or top_level_name == "index.md" or top_level_name == "README.md" %}
+                    {% assign is_config = true %}
+                {% endif %}
+
+                {% unless is_config or listed_items contains top_level_name %}
+                    {% assign listed_items = listed_items | push: top_level_name %}
+                    
+                    <li>
+                        <a href="{{ '/' | append: top_level_name | relative_url }}">
+                            {{ top_level_name }}
+                        </a>
+                    </li>
+                {% endunless %}
+
+            {% endfor %}
+            </ul>
+            
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 {{ site.title }}</p>
+    </footer>
+
+</body>
+</html>
