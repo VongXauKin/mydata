@@ -1,0 +1,4 @@
+# Cấu hình tối thiểu cho Jekyll
+title: Kho Lưu Trữ Cá Nhân
+description: Được xây dựng tự động bằng Jekyll.
+theme: jekyll-theme-minimal # Đây là một theme đơn giản, bạn có thể chọn theme khác
