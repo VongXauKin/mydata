@@ -1,32 +1,25 @@
 <section id="directory">
     <h2>📂 Danh Sách Thư Mục & File (Cấp 1 - Tự động)</h2>
-    <p>Bấm vào liên kết để truy cập file hoặc thư mục con. (Vòng lặp đã được tinh chỉnh)</p>
+    <p>Bấm vào liên kết để truy cập file hoặc thư mục con.</p>
     
     <ul>
-    {% comment %} Sử dụng site.static_files để duyệt qua tất cả các file tĩnh {% endcomment %}
     {% assign listed_items = "" | split: ',' %}
     
     {% for item in site.static_files %}
         
-        {% comment %} Lấy tên thư mục/file cấp 1 {% endcomment %}
         {% assign parts = item.path | remove_first: "/" | split: "/" %}
         {% assign top_level_name = parts | first %}
         
-        {% comment %} 
-        Điều kiện 1: Đảm bảo chỉ hiển thị các mục ở cấp thư mục gốc (không có dấu / thứ 2)
-        {% endcomment %}
         {% unless top_level_name contains "/" %}
-
-            {% comment %} 
-            Điều kiện 2: Loại bỏ các file/thư mục cấu hình BẮT ĐẦU bằng dấu gạch dưới, và các file cốt lõi
-            {% endcomment %}
-            {% assign is_jekyll_config = false %}
-            {% if top_level_name startswith "_" or top_level_name == "Gemfile" or top_level_name == "LICENSE" or top_level_name == "index.html" or top_level_name == "index.md" or top_level_name == "styles.css" or top_level_name == "README.md" %}
-                 {% assign is_jekyll_config = true %}
+            
+            {% assign is_config = false %}
+            {% comment %} Kiểm tra các file/thư mục cấu hình cần ẩn {% endcomment %}
+            {% if top_level_name startswith "_" or top_level_name startswith "." or top_level_name == "Gemfile" or top_level_name == "LICENSE" or top_level_name == "index.html" or top_level_name == "index.md" or top_level_name == "styles.css" or top_level_name == "README.md" %}
+                 {% assign is_config = true %}
             {% endif %}
 
             {% comment %} Chỉ liệt kê nếu không phải config và chưa được liệt kê {% endcomment %}
-            {% unless is_jekyll_config or listed_items contains top_level_name %}
+            {% unless is_config or listed_items contains top_level_name %}
                 {% assign listed_items = listed_items | push: top_level_name %}
                 
                 <li>
