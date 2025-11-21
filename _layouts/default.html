@@ -4,31 +4,30 @@
     
     <ul>
     {% comment %}
-    1. Lọc các file/thư mục cấp 1 (ở thư mục gốc)
-    2. Loại bỏ các file cấu hình và file ẩn.
+    Vòng lặp Liquid duyệt qua tất cả các file tĩnh (bao gồm thư mục)
     {% endcomment %}
     
     {% for item in site.static_files %}
-        {% assign is_root = false %}
         
-        {% comment %} Kiểm tra xem đây có phải là item cấp 1 không {% endcomment %}
-        {% assign path_components = item.path | split: '/' %}
-        {% if path_components.size == 2 %}
-             {% assign is_root = true %}
-        {% endif %}
+        {% assign filename = item.path | remove_first: "/" %}
         
-        {% if is_root %}
-            {% assign filename = item.path | remove_first: "/" %}
-            
-            {% comment %} Chỉ loại bỏ các file cấu hình rõ ràng {% endcomment %}
-            {% unless filename contains "_" or filename == "index.html" or filename == "index.md" or filename == "README.md" or filename == "styles.css" or filename contains "LICENSE" %} 
+        {% comment %} 
+        Điều kiện 1: Đảm bảo chỉ hiển thị các mục ở cấp thư mục gốc (không có dấu / thứ 2)
+        {% endcomment %}
+        {% unless filename contains "/" %}
+
+            {% comment %} 
+            Điều kiện 2: Loại bỏ các file cấu hình và file ẩn.
+            {% endcomment %}
+            {% unless filename contains "_" or filename == "index.html" or filename == "index.md" or filename == "README.md" or filename contains "LICENSE" or filename == "styles.css" %} 
                 <li>
                     <a href="{{ item.path | relative_url }}">
                         {{ filename }}
                     </a>
                 </li>
             {% endunless %}
-        {% endif %}
+            
+        {% endunless %}
     {% endfor %}
     </ul>
     
