@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page.title }} | Kho Lưu Trữ</title>
+    <link rel="stylesheet" href="/assets/style.css"> 
+</head>
+<body>
+    <header>
+        <h1>{{ site.title }}</h1>
+        <p>{{ site.description }}</p>
+    </header>
+
+    <section>
+        {{ content }}
+        
+        <h2>Danh sách các File (Tự động)</h2>
+        <ul>
+        {% for item in site.static_files %}
+            {% assign filename = item.path | split: '/' | last %}
+            
+            {% comment %} Chỉ hiển thị các file không phải là cấu hình {% endcomment %}
+            {% unless filename contains "_" or filename contains "." %} 
+                <li>
+                    <a href="{{ item.path | relative_url }}">
+                        {{ item.path }}
+                    </a>
+                </li>
+            {% endunless %}
+        {% endfor %}
+        </ul>
+        
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hosted by GitHub Pages/Jekyll.</p>
+    </footer>
+</body>
+</html>
