@@ -1,4 +1,14 @@
-# Cấu hình tối thiểu cho Jekyll
-title: Kho Lưu Trữ Cá Nhân
-description: Được xây dựng tự động bằng Jekyll.
-theme: jekyll-theme-minimal # Đây là một theme đơn giản, bạn có thể chọn theme khác
+title: Kho Lưu Trữ Cá Nhân Tự Động
+email: your-email@example.com
+description: >-
+  Đây là một Repository tự động hóa bằng GitHub Actions và Jekyll.
+baseurl: "" # Nếu bạn không dùng Subdirectory
+url: "https://<Tên_tài_khoản>.github.io/<Tên_Repo>" # Thay thế bằng URL của bạn
+encoding: utf-8
+permalink: pretty
+# Loại trừ các file cấu hình và script
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - _scripts/
+  - .github/
