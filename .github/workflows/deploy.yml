@@ -7,7 +7,7 @@ on:
 
 jobs:
   generate_and_build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write # Cần quyền ghi để tạo file index.md
       pages: write    # Cần quyền để triển khai GitHub Pages
@@ -26,12 +26,12 @@ jobs:
         # Đảm bảo đường dẫn này là chính xác
         run: python _scripts/generate_index.py
 
-      # --- BẮT ĐẦU CÁC BƯỚC JEKYLL VÀ TRIỂN KHAI ---
+      # --- PHẦN JEKYLL ĐƯỢC CẬP NHẬT ---
       - name: Setup Ruby and install Gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.x'
-          bundler-cache: true # Tự động cài đặt Gems từ Gemfile
+          ruby-version: '3.3' # <-- ĐÃ THAY ĐỔI: Chỉ định rõ phiên bản Ruby 3.3
+          bundler-cache: true
 
       - name: Build Jekyll Site
         run: bundle exec jekyll build # Dùng lệnh này để tạo thư mục _site
