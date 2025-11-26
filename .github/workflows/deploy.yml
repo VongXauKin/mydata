@@ -13,6 +13,10 @@ jobs:
       pages: write    # Cần quyền để triển khai GitHub Pages
       id-token: write # Cần để xác thực Deploy Pages
 
+    # --- BỔ SUNG QUAN TRỌNG: ĐẶT MÚI GIỜ VIỆT NAM ---
+    env:
+      TZ: Asia/Ho_Chi_Minh
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
