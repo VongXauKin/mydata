@@ -8,7 +8,7 @@ OUTPUT_FILE_ROOT = "index.md"
 EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
-    'index.md', 'README.md', 'LICENSE'
+    'index.md', 'README.md', 'LICENSE' # <-- Đã thêm README.md
 ]
 # Các phần mở rộng của file ảnh
 IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
@@ -94,6 +94,10 @@ def generate_index_content(directory_path, relative_level=0):
             
             # Loại trừ các file/thư mục cấu hình (bắt đầu bằng dấu chấm hoặc gạch dưới)
             if item.startswith('.') or item.startswith('_') or item in EXCLUDES:
+                continue
+            
+            # BỔ SUNG LOGIC LOẠI TRỪ FILE index.html TỰ TẠO
+            if item == "index.html" and directory_path != ROOT_DIR:
                 continue
             
             if os.path.isdir(full_path):
