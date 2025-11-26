@@ -49,7 +49,7 @@ def generate_index_content(directory_path, relative_level=0):
     
     # SỬA LỖI 404 (QUAY LẠI TRANG CHỦ): Dùng Liquid/Jekyll syntax cho baseurl
     # Khi Jekyll biên dịch, nó sẽ thay thế bằng /mydata/
-    back_link_path = "{{ site.baseurl }}/"
+    back_link_path = "../" * (relative_level + 1) + "index.html"
     
     if directory_path == ROOT_DIR:
         # Trang chủ
