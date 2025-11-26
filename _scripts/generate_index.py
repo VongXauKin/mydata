@@ -49,8 +49,8 @@ def generate_index_content(directory_path, relative_level=0):
     # 1. Cấu hình liên kết CSS/Quay lại
     # Ví dụ: Nếu ở cấp 1 (HÌNH ẢNH KỈ NIỆM), relative_level = 1. CSS cần ../styles.css
     css_path = "../" * (relative_level + 1) + "styles.css"
-    # Backlink cần quay lại Trang chủ (index.md)
-    back_link_path = "../" * (relative_level + 1) + "index.md" 
+    # back_link_path là đường dẫn đến trang chủ (ROOT)
+    back_link_path = "/"
     
     if directory_path == ROOT_DIR:
         # Trang chủ
@@ -82,7 +82,7 @@ def generate_index_content(directory_path, relative_level=0):
             f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>\n'
             f'  <ul class="file-list">\n'
         )
-        # Sử dụng back link đến thư mục cha (không phải trang chủ) cho mục đích điều hướng
+        # Dòng tạo HTML Back Link (khoảng dòng 97)
         parent_dir_link = "../" * (relative_level) + "index.html"
         back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
 
