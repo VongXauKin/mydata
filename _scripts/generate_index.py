@@ -16,8 +16,11 @@ IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
 # Các phần mở rộng của file video
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm', '.ogg', '.mkv', '.avi')
 
-# Kết hợp cả hai để quét
-MEDIA_EXTENSIONS = IMAGE_EXTENSIONS + VIDEO_EXTENSIONS 
+# BỔ SUNG: Các phần mở rộng của file tài liệu (Office & PDF) ---
+DOCUMENT_EXTENSIONS = ('.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt')
+
+# Kết hợp cả hai để quét media
+MEDIA_EXTENSIONS = IMAGE_EXTENSIONS + VIDEO_EXTENSIONS + DOCUMENT_EXTENSIONS
 
 # --- HÀM TẠO CẤU TRÚC HTML/MARKDOWN ---
 
