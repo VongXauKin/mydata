@@ -26,7 +26,8 @@ def generate_front_matter(title, layout, back_link=None):
         "---\n"
         f"layout: {layout}\n"
         f"title: {title}\n"
-        f"date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S +0700')}\n"
+        # BỎ ĐỊNH DẠNG MÚI GIỜ CỐ ĐỊNH, ĐỂ PYTHON TỰ LẤY THEO ENV TZ
+        f"date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n" 
     )
     if back_link:
         content += f"back_link: {back_link}\n"
@@ -60,7 +61,8 @@ def generate_index_content(directory_path, relative_level=0):
         content = generate_front_matter("Mục Lục Kho Lưu Trữ Tự Động", "default")
         content += (
             f"# 📂 Danh Sách Kho Lưu Trữ (Tự Động Hóa)\n\n"
-            f"*Lần cập nhật cuối: {datetime.datetime.now().strftime('%H:%M:%S ngày %d/%m/%Y')} (Giờ Việt Nam)*\n\n"
+            # BỎ CHỮ '(Giờ Việt Nam)' VÌ BẠN ĐÃ ĐẶT ENV TZ
+            f"*Lần cập nhật cuối: {datetime.datetime.now().strftime('%H:%M:%S ngày %d/%m/%Y')}*\n\n" 
             "## Liên Kết Thư Mục Chính\n\n"
             "<ul>\n"
         )
