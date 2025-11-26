@@ -8,7 +8,8 @@ OUTPUT_FILE_ROOT = "index.md"
 EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
-    'index.md', 'README.md', 'readme.md', 'LICENSE' # <-- Đã thêm readme.md
+    'index.md', 'README.md', 'readme.md', 'LICENSE', 
+    'index.html' # Thêm index.html vào EXCLUDES cho mục đích lọc
 ]
 # Các phần mở rộng của file ảnh
 IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
@@ -26,7 +27,6 @@ def generate_front_matter(title, layout, back_link=None):
         "---\n"
         f"layout: {layout}\n"
         f"title: {title}\n"
-        # Giữ nguyên định dạng này để dùng múi giờ từ ENV TZ
         f"date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n" 
     )
     if back_link:
@@ -47,7 +47,8 @@ def generate_index_content(directory_path, relative_level=0):
     # 1. Cấu hình liên kết CSS/Quay lại
     css_path = "../" * (relative_level + 1) + "styles.css"
     
-    # SỬA LỖI 404: Dùng Liquid/Jekyll syntax để đảm bảo baseurl là chính xác
+    # SỬA LỖI 404 (QUAY LẠI TRANG CHỦ): Dùng Liquid/Jekyll syntax cho baseurl
+    # Khi Jekyll biên dịch, nó sẽ thay thế bằng /mydata/
     back_link_path = "{{ site.baseurl }}/"
     
     if directory_path == ROOT_DIR:
@@ -92,17 +93,14 @@ def generate_index_content(directory_path, relative_level=0):
         for item in sorted(os.listdir(directory_path)):
             full_path = os.path.join(directory_path, item)
             
-            # --- SỬA LỖI LỌC NỘI DUNG (ẨN README.md/index.html) ---
+            # --- SỬA LỖI LỌC NỘI DUNG (Ẩn README.md/index.html ở mọi cấp) ---
             # Loại trừ các file/thư mục cấu hình (bắt đầu bằng dấu chấm hoặc gạch dưới)
             if item.startswith('.') or item.startswith('_') or item.lower() in lower_excludes:
                 continue
             
-            # BỎ QUA FILE index.html TỰ TẠO
-            if item == "index.html" and directory_path != ROOT_DIR:
-                continue
-            
+            # Nếu là thư mục
             if os.path.isdir(full_path):
-                # Nếu là thư mục, tạo liên kết và gọi đệ quy để tạo index.html bên trong
+                # ... (Logic gọi đệ quy giữ nguyên) ...
                 if directory_path == ROOT_DIR:
                     # Cấp 1: tên thư mục
                     nested_dir = item
@@ -117,17 +115,16 @@ def generate_index_content(directory_path, relative_level=0):
                     content += f'  <li>📁 {link}</li>\n'
                     # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
                     generate_index_content(full_path, relative_level + 1)
-
+            
+            # Nếu là file media (Ảnh & Video)
             elif os.path.isfile(full_path) and item.lower().endswith(MEDIA_EXTENSIONS):
-                # --- PHẦN XỬ LÝ MEDIA (Ảnh & Video) ---
+                # ... (Phần xử lý media giữ nguyên) ...
                 link = f'<a href="{item}" target="_blank">{item}</a>'
                 
-                # Xác định loại media và tạo thẻ HTML tương ứng
                 if item.lower().endswith(IMAGE_EXTENSIONS):
                     media_tag = f'<img src="{item}" alt="{item}" style="max-width: 300px; display: block; border: 1px solid #ccc;">'
                     icon = "🖼️"
                 elif item.lower().endswith(VIDEO_EXTENSIONS):
-                    # Tạo thẻ <video> với thuộc tính controls để người dùng có thể phát
                     file_extension = item.split('.')[-1]
                     media_tag = (
                         f'<video controls style="max-width: 500px; display: block; border: 1px solid #ccc;">'
@@ -146,8 +143,9 @@ def generate_index_content(directory_path, relative_level=0):
                     content += f'      {media_tag}\n'
                     content += f'    </li>\n'
                 
+            # Nếu là file khác (ví dụ: .pdf, .docx,...) 
             elif os.path.isfile(full_path):
-                # Nếu là file khác, tạo liên kết file
+                # Phần này được giữ lại để hiển thị các file tài liệu khác (nếu cần)
                 link = f'<a href="{item}" target="_blank">{item}</a>'
                 if directory_path == ROOT_DIR:
                     content += f'  <li>📄 {link}</li>\n'
