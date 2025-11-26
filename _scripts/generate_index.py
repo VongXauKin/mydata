@@ -82,8 +82,15 @@ def generate_index_content(directory_path, relative_level=0):
         )
         # Sử dụng back link đến thư mục cha và Trang Chủ
         parent_dir_link = "../" * (relative_level) + "index.html"
-        back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
 
+        # --- LOGIC ĐIỀU CHỈNH QUAN TRỌNG NHẤT ---
+        if relative_level == 1:
+            # Nếu ở cấp 1 (ví dụ: hinh-anh-ki-niem), thì thư mục cha chính là Trang Chủ.
+            # Chỉ hiển thị 1 liên kết duy nhất: Quay lại Trang Chủ
+            back_link_html = f'<p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
+        else:
+            # Nếu ở cấp 2 trở lên (ví dụ: nam-2016), hiển thị cả hai liên kết.
+            back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
     
     # 2. Quét thư mục và xử lý từng mục
     if os.path.exists(directory_path):
