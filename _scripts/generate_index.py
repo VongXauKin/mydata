@@ -165,8 +165,8 @@ def generate_index_content(directory_path, relative_level=0):
                 else:
                     # Xử lý ở cấp thư mục gốc (index.md)
                     content += f'  <li>{icon} {link}</li>\n'
-                else:
-                    continue
+            else:
+                continue
 
                 # Thêm vào file mục lục
                 if directory_path != ROOT_DIR:
@@ -175,15 +175,14 @@ def generate_index_content(directory_path, relative_level=0):
                     content += f'      {media_tag}\n'
                     content += f'    </li>\n'
                 
-            # Nếu là file khác (ví dụ: .pdf, .docx,...) 
-            elif os.path.isfile(full_path):
-                # Phần này được giữ lại để hiển thị các file tài liệu khác (nếu cần)
-                link = f'<a href="{item}" target="_blank">{item}</a>'
-                if directory_path == ROOT_DIR:
-                    content += f'  <li>📄 {link}</li>\n'
-                else:
-                    content += f'  <li>📄 {link}</li>\n'
-
+                # Nếu là file khác (ví dụ: .pdf, .docx,...) 
+                elif os.path.isfile(full_path):
+                    # Phần này được giữ lại để hiển thị các file tài liệu khác (nếu cần)
+                    link = f'<a href="{item}" target="_blank">{item}</a>'
+                    if directory_path == ROOT_DIR:
+                        content += f'  <li>📄 {link}</li>\n'
+                    else:
+                        content += f'  <li>📄 {link}</li>\n'
 
     # 3. Kết thúc nội dung và ghi file
     if directory_path == ROOT_DIR:
