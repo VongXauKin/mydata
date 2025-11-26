@@ -165,8 +165,8 @@ def generate_index_content(directory_path, relative_level=0):
                 else:
                     # Xử lý ở cấp thư mục gốc (index.md)
                     content += f'  <li>{icon} {link}</li>\n'
-             else:
-                continue 
+            else:
+                continue
 
                 # Thêm vào file mục lục
                 if directory_path != ROOT_DIR:
