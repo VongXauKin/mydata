@@ -16,11 +16,11 @@ IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
 # Các phần mở rộng của file video
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm', '.ogg', '.mkv', '.avi')
 
-# BỔ SUNG: Các phần mở rộng của file tài liệu (Office & PDF) ---
+# BỔ SUNG: Các phần mở rộng của file tài liệu (Office & PDF)
 DOCUMENT_EXTENSIONS = ('.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt')
 
-# Kết hợp cả hai để quét media
-MEDIA_EXTENSIONS = IMAGE_EXTENSIONS + VIDEO_EXTENSIONS + DOCUMENT_EXTENSIONS
+# SỬA LỖI: Kết hợp TẤT CẢ các extension cần hiển thị
+DISPLAY_EXTENSIONS = IMAGE_EXTENSIONS + VIDEO_EXTENSIONS + DOCUMENT_EXTENSIONS
 
 # --- HÀM TẠO CẤU TRÚC HTML/MARKDOWN ---
 
@@ -50,8 +50,7 @@ def generate_index_content(directory_path, relative_level=0):
     # 1. Cấu hình liên kết CSS/Quay lại
     css_path = "../" * (relative_level + 1) + "styles.css"
     
-    # SỬA LỖI 404: Cố định đường dẫn Trang Chủ bằng cú pháp Jekyll
-    # Jekyll sẽ thay thế {{ site.baseurl }} bằng /mydata
+    # FIX 404: Cố định đường dẫn Trang Chủ bằng cú pháp Jekyll
     back_link_path = "{{ site.baseurl }}/"
     
     if directory_path == ROOT_DIR:
@@ -83,21 +82,19 @@ def generate_index_content(directory_path, relative_level=0):
             f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>\n'
             f'  <ul class="file-list">\n'
         )
-        # 2. Tạo HTML Back Link (Khoảng dòng 98)
-        # Đây là phần tạo liên kết "Quay lại Thư Mục Cha" và "Quay lại Trang Chủ"
+        # 2. Tạo HTML Back Link 
         parent_dir_link = "../" * (relative_level) + "index.html"
-    
-        # --- LOGIC ĐIỀU CHỈNH QUAN TRỌNG NHẤT (SỬA 404) ---
+        
+        # --- LOGIC ĐIỀU CHỈNH QUAN TRỌNG NHẤT (ẨN/HIỆN LINK CHA) ---
         if relative_level == 1:
-            # Ở cấp 1 (hinh-anh-ki-niem), Thư mục Cha chính là Trang Chủ.
-            # Chỉ hiển thị 1 liên kết duy nhất: Quay lại Trang Chủ (sử dụng baseurl)
+            # Ở cấp 1, Thư mục Cha chính là Trang Chủ. Chỉ hiển thị Trang Chủ.
             back_link_html = f'<p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
         else:
-            # Ở cấp 2 trở lên (nam-2016), hiển thị cả hai.
-            # Liên kết Trang Chủ vẫn là back_link_path = "{{ site.baseurl }}/"
+            # Ở cấp 2 trở lên, hiển thị cả hai.
             back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
+
     
-    # 2. Quét thư mục và xử lý từng mục
+    # 3. Quét thư mục và xử lý từng mục
     if os.path.exists(directory_path):
         # Tạo danh sách loại trừ bằng chữ thường để so sánh case-insensitive
         lower_excludes = [e.lower() for e in EXCLUDES]
@@ -105,36 +102,34 @@ def generate_index_content(directory_path, relative_level=0):
         for item in sorted(os.listdir(directory_path)):
             full_path = os.path.join(directory_path, item)
             
-            # --- SỬA LỖI LỌC NỘI DUNG (Ẩn README.md/index.html ở mọi cấp) ---
+            # --- LỌC NỘI DUNG ---
             # Loại trừ các file/thư mục cấu hình (bắt đầu bằng dấu chấm hoặc gạch dưới)
             if item.startswith('.') or item.startswith('_') or item.lower() in lower_excludes:
                 continue
             
             # Nếu là thư mục
             if os.path.isdir(full_path):
-                # ... (Logic gọi đệ quy giữ nguyên) ...
+                
+                # Logic gọi đệ quy (giữ nguyên)
                 if directory_path == ROOT_DIR:
-                    # Cấp 1: tên thư mục
                     nested_dir = item
                     link = f'<a href="{nested_dir}/">{item}</a>'
                     content += f'  <li>📁 {link}</li>\n'
-                    # Gọi đệ quy cho thư mục con (cấp độ 1)
                     generate_index_content(full_path, relative_level=1)
                 else:
-                    # Cấp sâu hơn: Đường dẫn là directory_path/item
                     nested_dir = os.path.join(directory_path, item)
                     link = f'<a href="{item}/">{item}</a>'
                     content += f'  <li>📁 {link}</li>\n'
-                    # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
                     generate_index_content(full_path, relative_level + 1)
             
-            # --- KHỐI MỚI: Xử lý Media VÀ Tài liệu ---
+            # --- XỬ LÝ MEDIA VÀ TÀI LIỆU ---
+            # SỬ DỤNG DISPLAY_EXTENSIONS (Media + Docs)
             elif os.path.isfile(full_path) and item.lower().endswith(DISPLAY_EXTENSIONS):
                 link = f'<a href="{item}" target="_blank">{item}</a>'
-                icon = "📄" # Mặc định là icon Tài liệu
-                media_tag = "" # Mặc định không có thẻ hiển thị (cho file Office)
+                icon = "📄" 
+                media_tag = "" 
                 
-                # 1. Xử lý MEDIA (File cần hiển thị xem trước)
+                # 1. Xử lý MEDIA (Ảnh/Video)
                 if item.lower().endswith(IMAGE_EXTENSIONS):
                     media_tag = f'<img src="{item}" alt="{item}" style="max-width: 300px; display: block; border: 1px solid #ccc;">'
                     icon = "🖼️"
@@ -148,7 +143,7 @@ def generate_index_content(directory_path, relative_level=0):
                     )
                     icon = "🎬"
                 elif item.lower().endswith(DOCUMENT_EXTENSIONS):
-                    # 2. Xử lý TÀI LIỆU (Chỉ hiển thị liên kết, không hiển thị thẻ media)
+                    # 2. Xử lý TÀI LIỆU (Office/PDF)
                     # Icon mặc định là 📄
                     pass 
 
@@ -157,7 +152,7 @@ def generate_index_content(directory_path, relative_level=0):
                     content += f'    <li class="media-item">\n'
                     content += f'      <p>{icon} {link}</p>\n'
                     
-                    # Chỉ thêm thẻ media nếu nó đã được định nghĩa (tức là file ảnh/video)
+                    # Chỉ thêm thẻ media nếu nó là file ảnh/video
                     if media_tag:
                          content += f'      {media_tag}\n'
                          
@@ -165,26 +160,12 @@ def generate_index_content(directory_path, relative_level=0):
                 else:
                     # Xử lý ở cấp thư mục gốc (index.md)
                     content += f'  <li>{icon} {link}</li>\n'
+            
+            # Khối else cuối cùng: Bỏ qua các file không phải thư mục, media, hay docs.
             else:
-                continue
+                 continue
 
-                # Thêm vào file mục lục
-                if directory_path != ROOT_DIR:
-                    content += f'    <li class="media-item">\n'
-                    content += f'      <p>{icon} {link}</p>\n'
-                    content += f'      {media_tag}\n'
-                    content += f'    </li>\n'
-                
-                # Nếu là file khác (ví dụ: .pdf, .docx,...) 
-                elif os.path.isfile(full_path):
-                    # Phần này được giữ lại để hiển thị các file tài liệu khác (nếu cần)
-                    link = f'<a href="{item}" target="_blank">{item}</a>'
-                    if directory_path == ROOT_DIR:
-                        content += f'  <li>📄 {link}</li>\n'
-                    else:
-                        content += f'  <li>📄 {link}</li>\n'
-
-    # 3. Kết thúc nội dung và ghi file
+    # 4. Kết thúc nội dung và ghi file
     if directory_path == ROOT_DIR:
         content += "</ul>\n"
     else:
