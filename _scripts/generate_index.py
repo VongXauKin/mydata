@@ -47,9 +47,9 @@ def generate_index_content(directory_path, relative_level=0):
     # 1. Cấu hình liên kết CSS/Quay lại
     css_path = "../" * (relative_level + 1) + "styles.css"
     
-    # SỬA LỖI 404 (QUAY LẠI TRANG CHỦ): Dùng Liquid/Jekyll syntax cho baseurl
-    # Khi Jekyll biên dịch, nó sẽ thay thế bằng /mydata/
-    back_link_path = "../" * (relative_level + 1) + "index.html"
+    # back_link_path là đường dẫn tuyệt đối, sử dụng Liquid syntax.
+    # Cần giữ nguyên định nghĩa này để Jekyll có thể thay thế chính xác baseurl.
+    back_link_path = "{{ site.baseurl }}/"
     
     if directory_path == ROOT_DIR:
         # Trang chủ
