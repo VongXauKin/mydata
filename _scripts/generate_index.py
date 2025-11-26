@@ -8,7 +8,7 @@ OUTPUT_FILE_ROOT = "index.md"
 EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
-    'index.md', 'README.md', 'LICENSE' # <-- Đã thêm README.md
+    'index.md', 'README.md', 'readme.md', 'LICENSE' # <-- Đã thêm readme.md
 ]
 # Các phần mở rộng của file ảnh
 IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
@@ -26,7 +26,7 @@ def generate_front_matter(title, layout, back_link=None):
         "---\n"
         f"layout: {layout}\n"
         f"title: {title}\n"
-        # BỎ ĐỊNH DẠNG MÚI GIỜ CỐ ĐỊNH, ĐỂ PYTHON TỰ LẤY THEO ENV TZ
+        # Giữ nguyên định dạng này để dùng múi giờ từ ENV TZ
         f"date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n" 
     )
     if back_link:
@@ -37,20 +37,18 @@ def generate_front_matter(title, layout, back_link=None):
 def generate_index_content(directory_path, relative_level=0):
     """
     Tạo file mục lục (index.html hoặc index.md) cho một thư mục.
+    relative_level: số cấp thư mục mà thư mục hiện tại nằm dưới thư mục gốc.
     """
-    print(f"DEBUG: Processing directory: {directory_path}") # <--- DÒNG BỔ SUNG ĐỂ GỠ LỖI
     
-    # --- SỬA LỖI: Đảm bảo thư mục đích tồn tại trước khi ghi file ---
-    # Lệnh này khắc phục lỗi không tạo được file index.html trong thư mục con
+    # Đảm bảo thư mục đích tồn tại trước khi ghi file
     if directory_path != ROOT_DIR and not os.path.exists(directory_path):
         os.makedirs(directory_path, exist_ok=True)
-    # -----------------------------------------------------------------
     
     # 1. Cấu hình liên kết CSS/Quay lại
-    # Ví dụ: Nếu ở cấp 1 (HÌNH ẢNH KỈ NIỆM), relative_level = 1. CSS cần ../styles.css
     css_path = "../" * (relative_level + 1) + "styles.css"
-    # back_link_path là đường dẫn đến trang chủ (ROOT)
-    back_link_path = "/"
+    
+    # SỬA LỖI 404: Dùng Liquid/Jekyll syntax để đảm bảo baseurl là chính xác
+    back_link_path = "{{ site.baseurl }}/"
     
     if directory_path == ROOT_DIR:
         # Trang chủ
@@ -61,14 +59,13 @@ def generate_index_content(directory_path, relative_level=0):
         content = generate_front_matter("Mục Lục Kho Lưu Trữ Tự Động", "default")
         content += (
             f"# 📂 Danh Sách Kho Lưu Trữ (Tự Động Hóa)\n\n"
-            # BỎ CHỮ '(Giờ Việt Nam)' VÌ BẠN ĐÃ ĐẶT ENV TZ
-            f"*Lần cập nhật cuối: {datetime.datetime.now().strftime('%H:%M:%S ngày %d/%m/%Y')}*\n\n" 
+            f"*Lần cập nhật cuối: {datetime.datetime.now().strftime('%H:%M:%S ngày %d/%m/%Y')}*\n\n"
             "## Liên Kết Thư Mục Chính\n\n"
             "<ul>\n"
         )
     else:
         # Mục lục thư mục con (index.html)
-        output_filename = os.path.join(directory_path, "index.html") # <--- ĐƯỜNG DẪN GHI FILE
+        output_filename = os.path.join(directory_path, "index.html")
         folder_name = os.path.basename(directory_path)
         
         content = (
@@ -82,39 +79,44 @@ def generate_index_content(directory_path, relative_level=0):
             f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>\n'
             f'  <ul class="file-list">\n'
         )
-        # Dòng tạo HTML Back Link (khoảng dòng 97)
+        # Sử dụng back link đến thư mục cha và Trang Chủ
         parent_dir_link = "../" * (relative_level) + "index.html"
         back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
 
     
     # 2. Quét thư mục và xử lý từng mục
     if os.path.exists(directory_path):
+        # Tạo danh sách loại trừ bằng chữ thường để so sánh case-insensitive
+        lower_excludes = [e.lower() for e in EXCLUDES]
+        
         for item in sorted(os.listdir(directory_path)):
             full_path = os.path.join(directory_path, item)
             
+            # --- SỬA LỖI LỌC NỘI DUNG (ẨN README.md/index.html) ---
             # Loại trừ các file/thư mục cấu hình (bắt đầu bằng dấu chấm hoặc gạch dưới)
-            if item.startswith('.') or item.startswith('_') or item in EXCLUDES:
+            if item.startswith('.') or item.startswith('_') or item.lower() in lower_excludes:
                 continue
             
-            # BỔ SUNG LOGIC LOẠI TRỪ FILE index.html TỰ TẠO
+            # BỎ QUA FILE index.html TỰ TẠO
             if item == "index.html" and directory_path != ROOT_DIR:
                 continue
             
             if os.path.isdir(full_path):
-                
-                # --- LOGIC GỌI ĐỆ QUY ĐẢM BẢO ĐƯỜNG DẪN CHÍNH XÁC ---
+                # Nếu là thư mục, tạo liên kết và gọi đệ quy để tạo index.html bên trong
                 if directory_path == ROOT_DIR:
                     # Cấp 1: tên thư mục
                     nested_dir = item
-                    content += f'  <li>📁 <a href="{nested_dir}/">{item}</a></li>\n'
-                    # Gọi đệ quy: Sử dụng tên thư mục (nested_dir)
-                    generate_index_content(nested_dir, relative_level=1)
+                    link = f'<a href="{nested_dir}/">{item}</a>'
+                    content += f'  <li>📁 {link}</li>\n'
+                    # Gọi đệ quy cho thư mục con (cấp độ 1)
+                    generate_index_content(full_path, relative_level=1)
                 else:
                     # Cấp sâu hơn: Đường dẫn là directory_path/item
                     nested_dir = os.path.join(directory_path, item)
-                    content += f'  <li>📁 <a href="{item}/">{item}</a></li>\n'
-                    # Gọi đệ quy: Sử dụng đường dẫn đầy đủ (nested_dir)
-                    generate_index_content(nested_dir, relative_level + 1)
+                    link = f'<a href="{item}/">{item}</a>'
+                    content += f'  <li>📁 {link}</li>\n'
+                    # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
+                    generate_index_content(full_path, relative_level + 1)
 
             elif os.path.isfile(full_path) and item.lower().endswith(MEDIA_EXTENSIONS):
                 # --- PHẦN XỬ LÝ MEDIA (Ảnh & Video) ---
