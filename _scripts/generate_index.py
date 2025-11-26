@@ -144,4 +144,6 @@ def generate_index_content(directory_path, relative_level=0):
 
 
 if __name__ == "__main__":
-    print("--- Starting multi-level index generation ---
+    print("--- Starting multi-level index generation ---") # <--- ĐÃ SỬA
+    generate_index_content(ROOT_DIR, 0)
+    print("--- Index generation complete ---")
