@@ -12,7 +12,7 @@ EXCLUDES = [
 ]
 # Các phần mở rộng của file ảnh
 IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
-# Các phần mở rộng của file video (ĐÃ THÊM)
+# Các phần mở rộng của file video
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm', '.ogg', '.mkv', '.avi')
 
 # Kết hợp cả hai để quét
@@ -36,13 +36,23 @@ def generate_front_matter(title, layout, back_link=None):
 def generate_index_content(directory_path, relative_level=0):
     """
     Tạo file mục lục (index.html hoặc index.md) cho một thư mục.
+    relative_level: số cấp thư mục mà thư mục hiện tại nằm dưới thư mục gốc.
     """
     
+    # --- SỬA LỖI: Đảm bảo thư mục đích tồn tại trước khi ghi file ---
+    # Lệnh này khắc phục lỗi không tạo được file index.html trong thư mục con
+    if directory_path != ROOT_DIR and not os.path.exists(directory_path):
+        os.makedirs(directory_path, exist_ok=True)
+    # -----------------------------------------------------------------
+    
     # 1. Cấu hình liên kết CSS/Quay lại
+    # Ví dụ: Nếu ở cấp 1 (HÌNH ẢNH KỈ NIỆM), relative_level = 1. CSS cần ../styles.css
     css_path = "../" * (relative_level + 1) + "styles.css"
-    back_link_path = "../" * relative_level + "index.md" 
+    # Backlink cần quay lại Trang chủ (index.md)
+    back_link_path = "../" * (relative_level + 1) + "index.md" 
     
     if directory_path == ROOT_DIR:
+        # Trang chủ
         back_link_html = ""
         output_filename = OUTPUT_FILE_ROOT
         
@@ -55,7 +65,7 @@ def generate_index_content(directory_path, relative_level=0):
             "<ul>\n"
         )
     else:
-        # Mục lục thư mục con sử dụng HTML và Back Link
+        # Mục lục thư mục con (index.html)
         output_filename = os.path.join(directory_path, "index.html")
         folder_name = os.path.basename(directory_path)
         
@@ -67,10 +77,12 @@ def generate_index_content(directory_path, relative_level=0):
             f'</header>\n\n'
             f'<section id="directory">\n'
             f'  <h2>Danh Sách Nội Dung</h2>\n'
-            f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Mục lục</a></p>\n'
+            f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>\n'
             f'  <ul class="file-list">\n'
         )
-        back_link_html = f'<p class="back-link"><a href="{back_link_path}">← Quay lại Mục lục</a></p>'
+        # Sử dụng back link đến thư mục cha (không phải trang chủ) cho mục đích điều hướng
+        parent_dir_link = "../" * (relative_level) + "index.html"
+        back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
 
     
     # 2. Quét thư mục và xử lý từng mục
@@ -85,21 +97,26 @@ def generate_index_content(directory_path, relative_level=0):
             if os.path.isdir(full_path):
                 # Nếu là thư mục, tạo liên kết và gọi đệ quy để tạo index.html bên trong
                 if directory_path == ROOT_DIR:
+                    # Tạo liên kết cấp 1 trên trang chủ (index.md)
                     link = f'<a href="{item}/">{item}</a>'
                     content += f'  <li>📁 {link}</li>\n'
+                    # Gọi đệ quy cho thư mục con (cấp độ 1)
                     generate_index_content(full_path, relative_level=1)
                 else:
+                    # Tạo liên kết thư mục con trong mục lục (index.html)
                     link = f'<a href="{item}/">{item}</a>'
                     content += f'  <li>📁 {link}</li>\n'
+                    # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
                     generate_index_content(full_path, relative_level + 1)
 
             elif os.path.isfile(full_path) and item.lower().endswith(MEDIA_EXTENSIONS):
-                # --- PHẦN XỬ LÝ MEDIA MỚI ---
+                # --- PHẦN XỬ LÝ MEDIA (Ảnh & Video) ---
                 link = f'<a href="{item}" target="_blank">{item}</a>'
                 
                 # Xác định loại media và tạo thẻ HTML tương ứng
                 if item.lower().endswith(IMAGE_EXTENSIONS):
                     media_tag = f'<img src="{item}" alt="{item}" style="max-width: 300px; display: block; border: 1px solid #ccc;">'
+                    icon = "🖼️"
                 elif item.lower().endswith(VIDEO_EXTENSIONS):
                     # Tạo thẻ <video> với thuộc tính controls để người dùng có thể phát
                     file_extension = item.split('.')[-1]
@@ -109,13 +126,14 @@ def generate_index_content(directory_path, relative_level=0):
                         f'Trình duyệt của bạn không hỗ trợ video.'
                         f'</video>'
                     )
+                    icon = "🎬"
                 else:
-                    continue # Bỏ qua nếu không phải ảnh hoặc video
+                    continue 
 
                 # Thêm vào file mục lục
                 if directory_path != ROOT_DIR:
                     content += f'    <li class="media-item">\n'
-                    content += f'      <p>🎬 {link}</p>\n'
+                    content += f'      <p>{icon} {link}</p>\n'
                     content += f'      {media_tag}\n'
                     content += f'    </li>\n'
                 
@@ -144,6 +162,6 @@ def generate_index_content(directory_path, relative_level=0):
 
 
 if __name__ == "__main__":
-    print("--- Starting multi-level index generation ---") # <--- ĐÃ SỬA
+    print("--- Starting multi-level index generation ---")
     generate_index_content(ROOT_DIR, 0)
     print("--- Index generation complete ---")
