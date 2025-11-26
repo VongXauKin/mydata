@@ -128,11 +128,13 @@ def generate_index_content(directory_path, relative_level=0):
                     # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
                     generate_index_content(full_path, relative_level + 1)
             
-            # Nếu là file media (Ảnh & Video)
-            elif os.path.isfile(full_path) and item.lower().endswith(MEDIA_EXTENSIONS):
-                # ... (Phần xử lý media giữ nguyên) ...
+            # --- KHỐI MỚI: Xử lý Media VÀ Tài liệu ---
+            elif os.path.isfile(full_path) and item.lower().endswith(DISPLAY_EXTENSIONS):
                 link = f'<a href="{item}" target="_blank">{item}</a>'
+                icon = "📄" # Mặc định là icon Tài liệu
+                media_tag = "" # Mặc định không có thẻ hiển thị (cho file Office)
                 
+                # 1. Xử lý MEDIA (File cần hiển thị xem trước)
                 if item.lower().endswith(IMAGE_EXTENSIONS):
                     media_tag = f'<img src="{item}" alt="{item}" style="max-width: 300px; display: block; border: 1px solid #ccc;">'
                     icon = "🖼️"
@@ -145,8 +147,26 @@ def generate_index_content(directory_path, relative_level=0):
                         f'</video>'
                     )
                     icon = "🎬"
+                elif item.lower().endswith(DOCUMENT_EXTENSIONS):
+                    # 2. Xử lý TÀI LIỆU (Chỉ hiển thị liên kết, không hiển thị thẻ media)
+                    # Icon mặc định là 📄
+                    pass 
+
+                # Thêm vào file mục lục
+                if directory_path != ROOT_DIR:
+                    content += f'    <li class="media-item">\n'
+                    content += f'      <p>{icon} {link}</p>\n'
+                    
+                    # Chỉ thêm thẻ media nếu nó đã được định nghĩa (tức là file ảnh/video)
+                    if media_tag:
+                         content += f'      {media_tag}\n'
+                         
+                    content += f'    </li>\n'
                 else:
-                    continue 
+                    # Xử lý ở cấp thư mục gốc (index.md)
+                    content += f'  <li>{icon} {link}</li>\n'
+             else:
+                continue 
 
                 # Thêm vào file mục lục
                 if directory_path != ROOT_DIR:
