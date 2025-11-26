@@ -7,10 +7,13 @@ url: "https://<Tên_tài_khoản>.github.io/<Tên_Repo>"
 encoding: utf-8
 permalink: pretty
 
-# BỔ SUNG HOẶC CHỈNH SỬA PHẦN NÀY:
+# CẦN BỔ SUNG HOẶC CHỈNH SỬA PHẦN NÀY:
+include:
+  - HÌNH ẢNH KỈ NIỆM/ # <-- BỔ SUNG DÒNG NÀY ĐỂ BUỘC JEKYLL SAO CHÉP TOÀN BỘ THƯ MỤC
+  
 exclude:
   - Gemfile
   - Gemfile.lock
   - _scripts/
   - .github/
-  - vendor/  # <--- BẮT BUỘC PHẢI THÊM DÒNG NÀY
+  - vendor/
