@@ -23,9 +23,18 @@ jobs:
           python-version: '3.x'
 
       - name: Run script to generate index.md
-        # Sử dụng 'working-directory' để đảm bảo Python chạy từ thư mục gốc
         working-directory: ${{ github.workspace }}
         run: python _scripts/generate_index.py
+
+      # --- BƯỚC BỔ SUNG QUAN TRỌNG: COMMIT CÁC FILE INDEX ĐÃ TẠO ---
+      - name: Commit generated index files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Chỉ commit các file index đã được script Python tạo ra/cập nhật
+          file_pattern: '**/*.html **/*.md'
+          commit_message: "Auto-generated index files by Python script"
+          # Chúng ta cần git-auto-commit chạy trên các thay đổi của nhánh chính (main)
+          branch: main
 
       # --- PHẦN JEKYLL ĐƯỢC CẬP NHẬT ---
       - name: Setup Ruby and install Gems
