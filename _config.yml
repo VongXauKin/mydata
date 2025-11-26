@@ -10,6 +10,7 @@ permalink: pretty
 # CẦN BỔ SUNG HOẶC CHỈNH SỬA PHẦN NÀY:
 include:
   - HÌNH ẢNH KỈ NIỆM/ # <-- BỔ SUNG DÒNG NÀY ĐỂ BUỘC JEKYLL SAO CHÉP TOÀN BỘ THƯ MỤC
+  - HÌNH ẢNH KỈ NIỆM/NĂM 2016/ # <-- BỔ SUNG DÒNG NÀY (cần thiết nếu Jekyll bỏ qua)
   
 exclude:
   - Gemfile
