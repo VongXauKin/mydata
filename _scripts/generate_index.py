@@ -98,16 +98,16 @@ def generate_index_content(directory_path, relative_level=0):
             
             if os.path.isdir(full_path):
                 
-                # --- PHẦN SỬA LỖI QUAN TRỌNG TẠI ĐÂY ---
+                # --- LOGIC GỌI ĐỆ QUY ĐẢM BẢO ĐƯỜNG DẪN CHÍNH XÁC ---
                 if directory_path == ROOT_DIR:
-                    # Cấp 1: Tên thư mục = item
+                    # Cấp 1: tên thư mục
                     nested_dir = item
                     content += f'  <li>📁 <a href="{nested_dir}/">{item}</a></li>\n'
                     # Gọi đệ quy: Sử dụng tên thư mục (nested_dir)
                     generate_index_content(nested_dir, relative_level=1)
                 else:
                     # Cấp sâu hơn: Đường dẫn là directory_path/item
-                    nested_dir = os.path.join(directory_path, item) # Tạo đường dẫn đầy đủ
+                    nested_dir = os.path.join(directory_path, item)
                     content += f'  <li>📁 <a href="{item}/">{item}</a></li>\n'
                     # Gọi đệ quy: Sử dụng đường dẫn đầy đủ (nested_dir)
                     generate_index_content(nested_dir, relative_level + 1)
