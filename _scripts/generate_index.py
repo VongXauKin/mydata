@@ -66,7 +66,7 @@ def generate_index_content(directory_path, relative_level=0):
         )
     else:
         # Mục lục thư mục con (index.html)
-        output_filename = os.path.join(directory_path, "index.html")
+        output_filename = os.path.join(directory_path, "index.html") # <--- ĐƯỜNG DẪN GHI FILE
         folder_name = os.path.basename(directory_path)
         
         content = (
@@ -95,19 +95,20 @@ def generate_index_content(directory_path, relative_level=0):
                 continue
             
             if os.path.isdir(full_path):
-                # Nếu là thư mục, tạo liên kết và gọi đệ quy để tạo index.html bên trong
+                
+                # --- PHẦN SỬA LỖI QUAN TRỌNG TẠI ĐÂY ---
                 if directory_path == ROOT_DIR:
-                    # Tạo liên kết cấp 1 trên trang chủ (index.md)
-                    link = f'<a href="{item}/">{item}</a>'
-                    content += f'  <li>📁 {link}</li>\n'
-                    # Gọi đệ quy cho thư mục con (cấp độ 1)
-                    generate_index_content(full_path, relative_level=1)
+                    # Cấp 1: Tên thư mục = item
+                    nested_dir = item
+                    content += f'  <li>📁 <a href="{nested_dir}/">{item}</a></li>\n'
+                    # Gọi đệ quy: Sử dụng tên thư mục (nested_dir)
+                    generate_index_content(nested_dir, relative_level=1)
                 else:
-                    # Tạo liên kết thư mục con trong mục lục (index.html)
-                    link = f'<a href="{item}/">{item}</a>'
-                    content += f'  <li>📁 {link}</li>\n'
-                    # Gọi đệ quy cho thư mục con (cấp độ tăng lên)
-                    generate_index_content(full_path, relative_level + 1)
+                    # Cấp sâu hơn: Đường dẫn là directory_path/item
+                    nested_dir = os.path.join(directory_path, item) # Tạo đường dẫn đầy đủ
+                    content += f'  <li>📁 <a href="{item}/">{item}</a></li>\n'
+                    # Gọi đệ quy: Sử dụng đường dẫn đầy đủ (nested_dir)
+                    generate_index_content(nested_dir, relative_level + 1)
 
             elif os.path.isfile(full_path) and item.lower().endswith(MEDIA_EXTENSIONS):
                 # --- PHẦN XỬ LÝ MEDIA (Ảnh & Video) ---
