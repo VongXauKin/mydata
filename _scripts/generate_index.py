@@ -47,8 +47,8 @@ def generate_index_content(directory_path, relative_level=0):
     # 1. Cấu hình liên kết CSS/Quay lại
     css_path = "../" * (relative_level + 1) + "styles.css"
     
-    # back_link_path là đường dẫn tuyệt đối, sử dụng Liquid syntax.
-    # Cần giữ nguyên định nghĩa này để Jekyll có thể thay thế chính xác baseurl.
+    # SỬA LỖI 404: Cố định đường dẫn Trang Chủ bằng cú pháp Jekyll
+    # Jekyll sẽ thay thế {{ site.baseurl }} bằng /mydata
     back_link_path = "{{ site.baseurl }}/"
     
     if directory_path == ROOT_DIR:
@@ -80,16 +80,18 @@ def generate_index_content(directory_path, relative_level=0):
             f'  <p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>\n'
             f'  <ul class="file-list">\n'
         )
-        # Sử dụng back link đến thư mục cha và Trang Chủ
+        # 2. Tạo HTML Back Link (Khoảng dòng 98)
+        # Đây là phần tạo liên kết "Quay lại Thư Mục Cha" và "Quay lại Trang Chủ"
         parent_dir_link = "../" * (relative_level) + "index.html"
-
-        # --- LOGIC ĐIỀU CHỈNH QUAN TRỌNG NHẤT ---
+    
+        # --- LOGIC ĐIỀU CHỈNH QUAN TRỌNG NHẤT (SỬA 404) ---
         if relative_level == 1:
-            # Nếu ở cấp 1 (ví dụ: hinh-anh-ki-niem), thì thư mục cha chính là Trang Chủ.
-            # Chỉ hiển thị 1 liên kết duy nhất: Quay lại Trang Chủ
+            # Ở cấp 1 (hinh-anh-ki-niem), Thư mục Cha chính là Trang Chủ.
+            # Chỉ hiển thị 1 liên kết duy nhất: Quay lại Trang Chủ (sử dụng baseurl)
             back_link_html = f'<p class="back-link"><a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
         else:
-            # Nếu ở cấp 2 trở lên (ví dụ: nam-2016), hiển thị cả hai liên kết.
+            # Ở cấp 2 trở lên (nam-2016), hiển thị cả hai.
+            # Liên kết Trang Chủ vẫn là back_link_path = "{{ site.baseurl }}/"
             back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
     
     # 2. Quét thư mục và xử lý từng mục
