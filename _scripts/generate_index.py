@@ -36,8 +36,8 @@ def generate_front_matter(title, layout, back_link=None):
 def generate_index_content(directory_path, relative_level=0):
     """
     Tạo file mục lục (index.html hoặc index.md) cho một thư mục.
-    relative_level: số cấp thư mục mà thư mục hiện tại nằm dưới thư mục gốc.
     """
+    print(f"DEBUG: Processing directory: {directory_path}") # <--- DÒNG BỔ SUNG ĐỂ GỠ LỖI
     
     # --- SỬA LỖI: Đảm bảo thư mục đích tồn tại trước khi ghi file ---
     # Lệnh này khắc phục lỗi không tạo được file index.html trong thư mục con
