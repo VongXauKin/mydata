@@ -23,7 +23,8 @@ jobs:
           python-version: '3.x'
 
       - name: Run script to generate index.md
-        # Đảm bảo đường dẫn này là chính xác
+        # Sử dụng 'working-directory' để đảm bảo Python chạy từ thư mục gốc
+        working-directory: ${{ github.workspace }}
         run: python _scripts/generate_index.py
 
       # --- PHẦN JEKYLL ĐƯỢC CẬP NHẬT ---
