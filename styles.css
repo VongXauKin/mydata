@@ -118,10 +118,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px; 
 }
 
 .header-bar .title {
@@ -294,12 +291,18 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* === SEARCH BAR STYLES === */
+/* === HEADER VÀ SEARCH BAR BÊN TRÊN CỦA MAIN CONTENT === */
+.search-bar-top {
+    background-color: #fff;
+    padding: 15px 20px;
+    margin: -20px -20px 20px -20px; /* Mở rộng nền trắng ra sát cạnh .main-content */
+    border-bottom: 1px solid #e0e6ed;
+}
+
 .search-container {
     display: flex;
     align-items: center;
-    width: 400px; /* Chiều rộng thanh tìm kiếm */
-    max-width: 100%;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
     border: 1px solid #ccc;
     border-radius: 6px;
     background-color: #fff;
