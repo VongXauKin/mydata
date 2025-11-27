@@ -1,5 +1,22 @@
 <!DOCTYPE html>
 <html lang="vi">
+<main class="main-content">
+    <div class="header-bar">
+        <div class="title">Tài liệu và Hình ảnh</div>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Tìm kiếm tài liệu & hình ảnh (Omni Search)...">
+            <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </div>
+    
+    <div id="results-container"></div>
+    
+    <div id="content-main">
+        {{ content }} 
+    </div>
+</main>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
