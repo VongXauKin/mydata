@@ -1,0 +1,16 @@
+---
+layout: null
+permalink: /search.json
+---
+[
+  {% for file in site.static_files %}
+    {% unless file.path contains '/_layouts' or file.path contains '/_scripts' or file.path contains '/.github' %}
+      {
+        "title": "{{ file.path | split: '/' | last | escape }}",
+        "url": "{{ file.path | relative_url | escape }}",
+        "path": "{{ file.path | escape }}"
+      }
+      {% unless forloop.last %},{% endunless %}
+    {% endunless %}
+  {% endfor %}
+]
