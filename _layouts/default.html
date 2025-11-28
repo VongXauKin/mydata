@@ -56,9 +56,13 @@
                 {{ content }} 
             </div>
         </main>
+</div> <footer class="footer">
+        <p class="bottom-footer-content">© 2025 Data Repository. Powered by Jekyll & GitHub Pages.</p>
+    </footer>
 
+    <script src="https://unpkg.com/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
     <script>
-        // Khởi tạo công cụ tìm kiếm (Giữ nguyên)
+        // Khởi tạo công cụ tìm kiếm (Đã được chuyển từ khối script thứ hai vào đây)
         const sjs = SimpleJekyllSearch({
             searchInput: document.getElementById('search-input'),
             resultsContainer: document.getElementById('results-container'),
@@ -69,7 +73,7 @@
             fuzzy: false 
         });
 
-        // Thêm logic để ẩn/hiện nội dung chính khi tìm kiếm (Giữ nguyên)
+        // Thêm logic để ẩn/hiện nội dung chính khi tìm kiếm (Đã được chuyển vào đây)
         const searchInput = document.getElementById('search-input');
         const contentMain = document.getElementById('content-main');
         
@@ -81,10 +85,5 @@
             }
         });
     </script>
-    </div> <footer class="footer">
-        <p class="bottom-footer-content">© 2025 Data Repository. Powered by Jekyll & GitHub Pages.</p>
-        </footer>
-
-    <script src="https://unpkg.com/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
-    </body>
+</body>
 </html>
