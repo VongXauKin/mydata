@@ -121,58 +121,5 @@
     updateClock(); // Chạy lần đầu
     </script>
 
-    function renderCalendar() {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-    
-    // Tạo tiêu đề
-    let calendarHTML = `<h4 style="text-align:center; color:#007bff; margin-bottom: 15px;">Tháng ${currentMonth + 1}, ${currentYear}</h4>`;
-    
-    // Tạo bảng lịch
-    calendarHTML += '<table style="width:100%; text-align:center; font-size:0.9em;">';
-    calendarHTML += '<thead><tr><th>CN</th><th>T2</th><th>T3</th><th>T4</th><th>T5</th><th>T6</th><th>T7</th></tr></thead><tbody>';
-    
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    let date = 1;
-    
-    for (let i = 0; i < 6; i++) {
-        calendarHTML += '<tr>';
-        for (let j = 0; j < 7; j++) {
-            if (i === 0 && j < firstDayOfMonth) {
-                // Ô trống trước ngày 1
-                calendarHTML += '<td></td>';
-            } else if (date > daysInMonth) {
-                // Ô trống sau ngày cuối cùng
-                calendarHTML += '<td></td>';
-            } else {
-                let cellStyle = '';
-                // Highlight ngày hiện tại
-                if (date === now.getDate() && currentMonth === now.getMonth() && currentYear === now.getFullYear()) {
-                    cellStyle = 'style="background-color:#007bff; color:white; border-radius:50%; font-weight:bold;"';
-                }
-                // Highlight Chủ Nhật
-                else if (j === 0) {
-                    cellStyle = 'style="color:red;"';
-                }
-                
-                calendarHTML += `<td ${cellStyle}>${date}</td>`;
-                date++;
-            }
-        }
-        calendarHTML += '</tr>';
-        if (date > daysInMonth) break;
-    }
-    
-    calendarHTML += '</tbody></table>';
-    
-    document.getElementById('calendar-widget').innerHTML = calendarHTML;
-}
-
-// Chạy hàm lịch cùng với hàm đồng hồ
-updateClock(); 
-renderCalendar();
-    
 </body>
 </html>
