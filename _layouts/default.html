@@ -104,5 +104,22 @@
             contentMain.classList.remove('hidden');
         }
     </script>
+
+    <script>
+    function updateClock() {
+        const now = new Date();
+        // Định dạng thời gian
+        const timeString = now.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
+        
+        // Cập nhật cho widget
+        const clockWidget = document.getElementById('analog-clock-widget');
+        if (clockWidget) {
+            clockWidget.innerHTML = `<div style="text-align:center; font-size:1.8em; font-weight:600; color:#333;">${timeString}</div>`;
+        }
+    }
+    setInterval(updateClock, 1000);
+    updateClock(); // Chạy lần đầu
+    </script>
+    
 </body>
 </html>
