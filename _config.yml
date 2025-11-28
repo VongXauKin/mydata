@@ -1,5 +1,5 @@
 title: Kho Lưu Trữ Cá Nhân Tự Động
-email: your-email@example.com
+email: xaukin.vong@gmail.com
 description: >-
   Đây là một Repository tự động hóa bằng GitHub Actions và Jekyll.
 baseurl: "/mydata" # Đảm bảo giá trị này khớp với tên Repository của bạn
