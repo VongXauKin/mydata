@@ -291,13 +291,21 @@ h1, h2, h3, h4, h5, h6 {
    ==================================== */
 /* Đảm bảo không có max-width nào bó hẹp footer */
 .footer {
-    width: 100%; /* Đảm bảo chiều rộng tối đa */
-    text-align: center; /* Căn giữa nội dung văn bản */
+    width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng trình duyệt */
     padding: 20px 0;
     margin-top: 40px;
     border-top: 1px solid #ddd;
     color: #777;
     font-size: 0.9em;
+    /* Dòng này quan trọng để căn giữa nội dung */
+    text-align: center; 
+}
+
+/* Lớp mới để kiểm soát văn bản bên trong */
+.bottom-footer-content {
+    margin: 0; /* Xóa margin mặc định của thẻ <p> */
+    padding: 0;
+    display: block; /* Đảm bảo nó là một khối */
 }
 
 /* ====================================
