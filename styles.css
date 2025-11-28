@@ -305,14 +305,13 @@ h1, h2, h3, h4, h5, h6 {
 /* ====================================
    FOOTER
    ==================================== */
-.footer {
-    text-align: center; /* Đã sửa: Căn giữa nội dung văn bản */
+footer {
+    text-align: center; /* Đã căn giữa */
     padding: 20px 0;
     margin-top: 40px;
     border-top: 1px solid #ddd;
     color: #777;
     font-size: 0.9em;
-    /* Loại bỏ background và margin-top: auto nếu có trong khối này */
 }
 
 /* ====================================
