@@ -35,12 +35,13 @@ h1, h2, h3, h4, h5, h6 {
 .container {
     display: flex;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1200px; /* Điều chỉnh lại max-width cho cân đối */
     margin: 20px auto;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden; 
+    min-height: 80vh; 
 }
 
 /* ====================================
@@ -203,23 +204,6 @@ h1, h2, h3, h4, h5, h6 {
 .main-content {
     flex-grow: 1; /* Chiếm hết không gian còn lại */
     padding: 20px;
-}
-
-/* === WIDGET COLUMN (Cột bên phải) === */
-.widget-sidebar {
-    width: 250px; /* Chiều rộng tương đương Sidebar trái */
-    background-color: #f8f8f8; 
-    padding: 20px;
-    border-left: 1px solid #e0e6ed;
-    flex-shrink: 0;
-}
-
-.widget-sidebar h3 {
-    text-align: center;
-    color: #555;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
 }
 
 .header-bar {
