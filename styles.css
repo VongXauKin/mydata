@@ -289,15 +289,14 @@ h1, h2, h3, h4, h5, h6 {
    FOOTER
    ==================================== */
 .footer {
-    text-align: center;
-    padding: 20px;
+    text-align: center; /* Đã sửa: Căn giữa nội dung văn bản */
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
     color: #777;
-    font-size: 0.85em;
-    border-top: 1px solid #e0e6ed;
-    margin-top: auto; /* Đẩy footer xuống cuối flex container */
-    background-color: #ffffff;
+    font-size: 0.9em;
+    /* Loại bỏ background và margin-top: auto nếu có trong khối này */
 }
-
 
 /* ====================================
    RESPONSIVENESS (Để gọn gàng trên di động)
