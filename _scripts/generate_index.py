@@ -11,7 +11,7 @@ EXCLUDES = [
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
     'index.md', 'README.md', 'readme.md', 'LICENSE', 
     'index.html',
-    # THÊM CÁC THƯ MỤC MỚI VÀO ĐÂY ĐỂ TRÁNH LỖI XỬ LÝ
+    # THƯ MỤC MỚI ĐƯỢC THÊM VÀO EXCLUDES
     'documents', 
     'photos', 
     'videos' 
