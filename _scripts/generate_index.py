@@ -203,7 +203,6 @@ def generate_index_content(directory_path, relative_level=0):
         content += "</tbody>\n</table>\n" # Kết thúc bảng
         content += "</section>\n" # Giữ nguyên nếu bạn dùng section
         content += back_link_html + '\n' # Thêm link quay lại
-        content += '<footer>\n  <p>&copy; 2025 Data Repository.</p>\n</footer>\n'
         
     with open(output_filename, 'w', encoding='utf-8') as f:
         f.write(content)
