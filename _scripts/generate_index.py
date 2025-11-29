@@ -10,7 +10,11 @@ EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
     'index.md', 'README.md', 'readme.md', 'LICENSE', 
-    'index.html'
+    'index.html',
+    # THÊM CÁC THƯ MỤC MỚI VÀO ĐÂY ĐỂ TRÁNH LỖI XỬ LÝ
+    'documents', 
+    'photos', 
+    'videos' 
 ]
 # Các phần mở rộng của file ảnh
 IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
