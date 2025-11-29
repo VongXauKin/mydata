@@ -21,9 +21,10 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="{{ site.baseurl }}/hinh-anh-ki-niem/" {% if page.url contains '/hinh-anh-ki-niem/' %}class="active"{% endif %}>My Files</a></li>
-                    <li><a href="{{ site.baseurl }}/documents/">Documents</a></li> 
-                    <li><a href="{{ site.baseurl }}/photos/">Photos</a></li>
-                    <li><a href="{{ site.baseurl }}/videos/">Videos</a></li> 
+                    <li><a href="#">Code</a></li>
+                    <li><a href="#">Documents</a></li>
+                    <li><a href="#">Music</a></li>
+                    <li><a href="#">Photos</a></li>
                 </ul>
             </nav>
         </aside>
@@ -56,9 +57,10 @@
                 {{ content }} 
             </div>
         </main>
-        
-    </div> <footer class="footer">
-        <p class="bottom-footer-content">© 2025 Data Repository. Powered by Jekyll & GitHub Pages.</p>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2025 Data Repository. Powered by Jekyll & GitHub Pages.</p>
     </footer>
 
     <script src="https://unpkg.com/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
@@ -74,10 +76,12 @@
             fuzzy: false 
         });
 
-        // Logic ẩn/hiện nội dung chính khi tìm kiếm
+        // Thêm logic để ẩn/hiện nội dung chính khi tìm kiếm
         const searchInput = document.getElementById('search-input');
         const contentMain = document.getElementById('content-main');
+        const resultsContainer = document.getElementById('results-container');
         
+        // Ẩn/Hiện khi gõ
         searchInput.addEventListener('keyup', function() {
             if (searchInput.value.length > 0) {
                 contentMain.classList.add('hidden');
@@ -85,6 +89,11 @@
                 contentMain.classList.remove('hidden');
             }
         });
+
+        // Đảm bảo không có kết quả tìm kiếm mờ khi input rỗng
+        if (resultsContainer.innerHTML.trim() === '') {
+            contentMain.classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
