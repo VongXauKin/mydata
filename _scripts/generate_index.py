@@ -38,7 +38,7 @@ VIDEO_EXTENSIONS = (
 # Template YAML Front Matter
 FRONT_MATTER = """---
 layout: default
-title: Mục lục {title}
+title: {title}
 permalink: /{path}/
 ---
 """
