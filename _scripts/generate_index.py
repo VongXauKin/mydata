@@ -130,7 +130,8 @@ def generate_index(directory, root_dir):
     # Thiết lập bộ lọc file rỗng
     file_filter = None 
 
-    # ÁP DỤNG BỘ LỌC DỰA TRÊN TÊN THƯ MỤC GỐC
+    # ÁP DỤNG BỘ LỌC DỰA TRÊN ĐƯỜNG DẪN TƯƠNG ĐỐI
+    # LƯU Ý: relative_path == '.' là thư mục gốc (My Files)
     if relative_path == 'documents':
         file_filter = DOCUMENT_EXTENSIONS
     elif relative_path == 'photos':
@@ -138,13 +139,13 @@ def generate_index(directory, root_dir):
     elif relative_path == 'videos':
         file_filter = VIDEO_EXTENSIONS
     
-    
-    # Tiêu đề cho YAML Front Matter
+    # Tiêu đề cho YAML Front Matter (Sửa lại để dễ quản lý hơn)
     if relative_path == '.':
-        title = "Repository"
+        title = "My Files"
         permalink = "" # Trang chủ
     else:
-        title = relative_path
+        # Sử dụng tên thư mục làm tiêu đề, nhưng định dạng lại
+        title = current_dir_name.replace('-', ' ').title()
         permalink = relative_path
         
     # Bắt đầu nội dung HTML
