@@ -3,23 +3,17 @@ import datetime
 
 # --- CẤU HÌNH ---
 
-# Danh sách các file/thư mục cần loại trừ khỏi việc xử lý index
+# Các file/thư mục cấu hình cần loại trừ
 EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
     'index.md', 'README.md', 'readme.md', 'LICENSE', 
-    'index.html', 'search.json'
+    'index.html',
+    # THƯ MỤC MỚI ĐƯỢC THÊM VÀO EXCLUDES
+    'documents', 
+    'photos', 
+    'videos' 
 ]
-
-# --- THÔNG TIN CHUNG ---
-
-# Template YAML Front Matter
-FRONT_MATTER = """---
-layout: default
-title: {title}
-permalink: /{path}/
----
-"""
 
 HTML_TEMPLATE_START = """
 <table class="file-table">
