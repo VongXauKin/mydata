@@ -3,31 +3,13 @@ import datetime
 
 # --- CẤU HÌNH ---
 
+# Danh sách các file/thư mục cần loại trừ khỏi việc xử lý index
 EXCLUDES = [
     '.git', '_site', '_scripts', 'node_modules', '_layouts', 
     '_config.yml', 'Gemfile', 'Gemfile.lock', 'styles.css', 
     'index.md', 'README.md', 'readme.md', 'LICENSE', 
     'index.html', 'search.json'
 ]
-
-# --- ĐỊNH NGHĨA BỘ LỌC FILE TYPES ---
-
-DOCUMENT_EXTENSIONS = (
-    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.odt', '.txt', '.rtf'
-)
-PHOTO_EXTENSIONS = (
-    '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp', '.svg'
-)
-VIDEO_EXTENSIONS = (
-    '.mp4', '.mov', '.avi', '.mkv', '.wmv', '.flv', '.webm'
-)
-
-# Ánh xạ tên thư mục đến bộ lọc
-FOLDER_FILTERS = {
-    'documents': DOCUMENT_EXTENSIONS,
-    'photos': PHOTO_EXTENSIONS,
-    'videos': VIDEO_EXTENSIONS
-}
 
 # --- THÔNG TIN CHUNG ---
 
@@ -56,6 +38,7 @@ HTML_TEMPLATE_END = """
 </table>
 """
 
+# Định nghĩa Icon cho các loại file và thư mục
 ICONS = {
     'folder': 'fa-folder', 'file': 'fa-file', 'pdf': 'fa-file-pdf', 
     'doc': 'fa-file-word', 'docx': 'fa-file-word', 'xls': 'fa-file-excel', 
@@ -71,41 +54,37 @@ ICONS = {
 # --- CÁC HÀM HỖ TRỢ ---
 
 def get_icon(filename, is_dir=False):
+    """Trả về lớp icon Font Awesome dựa trên loại file/thư mục."""
     if is_dir:
         return ICONS['folder']
     ext = os.path.splitext(filename)[1].lstrip('.').lower()
     return ICONS.get(ext, ICONS['file'])
 
 def get_file_size(size_bytes):
+    """Chuyển đổi kích thước byte thành định dạng dễ đọc (KB, MB, GB)."""
     if size_bytes < 1024: return f"{size_bytes} Bytes"
     elif size_bytes < 1024 * 1024: return f"{size_bytes / 1024:.2f} KB"
     elif size_bytes < 1024 * 1024 * 1024: return f"{size_bytes / (1024 * 1024):.2f} MB"
     else: return f"{size_bytes / (1024 * 1024 * 1024):.2f} GB"
 
 def get_last_modified(timestamp):
+    """Chuyển đổi timestamp thành định dạng ngày tháng dễ đọc."""
     return datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
 # --- HÀM TẠO INDEX CHÍNH ---
 
 def generate_index(directory, root_dir):
+    """Tạo file index.html cho thư mục đã cho."""
     
     current_dir_name = os.path.basename(os.path.abspath(directory))
     relative_path = os.path.relpath(directory, root_dir).replace('\\', '/')
-    
-    file_filter = None 
-
-    # --- ĐIỂM SỬA CHỮA LỖI LỌC ---
-    # Kiểm tra xem đường dẫn tương đối có phải là một trong các thư mục lọc không
-    path_segments = relative_path.split('/')
-    if len(path_segments) == 1 and path_segments[0] in FOLDER_FILTERS:
-        file_filter = FOLDER_FILTERS.get(path_segments[0])
-    # -------------------------------
     
     # Thiết lập Tiêu đề và Permalink
     if relative_path == '.':
         title = "My Files"
         permalink = "" # Trang chủ (ví dụ: tenmien.com/)
     else:
+        # Sử dụng tên thư mục làm tiêu đề, định dạng lại
         title = current_dir_name.replace('-', ' ').title()
         permalink = relative_path
         
@@ -130,7 +109,7 @@ def generate_index(directory, root_dir):
         
         # Xử lý thư mục
         if is_dir:
-            # Liên kết đến thư mục con (ví dụ: /hinh-anh-ki-niem/nam-2024)
+            # Liên kết đến thư mục con (ví dụ: /documents/subfolder)
             link = f"/{relative_path}/{item}" if relative_path != '.' else f"/{item}"
             
             # Gọi đệ quy cho thư mục con
@@ -149,13 +128,7 @@ def generate_index(directory, root_dir):
             
         # Xử lý file
         else:
-            ext = os.path.splitext(item)[1].lower()
-            
-            # ÁP DỤNG KIỂM TRA BỘ LỌC
-            if file_filter and ext not in file_filter:
-                continue
-                
-            # Tạo liên kết file (ví dụ: /hinh-anh-ki-niem/file.jpg)
+            # TẠO LIÊN KẾT CHO TẤT CẢ FILE (Bỏ qua logic lọc)
             link = f"/{relative_path}/{item}" if relative_path != '.' else f"/{item}"
             
             size = get_file_size(os.path.getsize(item_path))
@@ -174,12 +147,13 @@ def generate_index(directory, root_dir):
 
     html_content += HTML_TEMPLATE_END
     
-    # Ghi file index.html
+    # Tạo nội dung file index.html
     final_content = (
         FRONT_MATTER.format(title=title, path=permalink) +
         html_content
     )
     
+    # Ghi file index.html
     output_dir = directory
     output_path = os.path.join(output_dir, 'index.html')
     
