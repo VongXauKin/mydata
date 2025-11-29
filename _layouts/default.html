@@ -1,68 +1,12 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | {{ site.title }}</title>
+</main>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <link rel="stylesheet" href="{{ site.baseurl }}/styles.css">
-</head>
-<body>
-    
-    <div class="container">
-        
-        <aside class="sidebar">
-            <h3 style="padding: 0 20px;"><i class="fa-solid fa-folder-open"></i> Files</h3> 
-            
-            <button class="add-new-btn">Add New</button> 
-            
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="{{ site.baseurl }}/hinh-anh-ki-niem/" {% if page.url contains '/hinh-anh-ki-niem/' %}class="active"{% endif %}>My Files</a></li>
-                    <li><a href="{{ site.baseurl }}/documents/">Documents</a></li> 
-                    <li><a href="{{ site.baseurl }}/photos/">Photos</a></li>
-                    <li><a href="{{ site.baseurl }}/videos/">Videos</a></li> 
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="main-content">
-            
-            <div class="search-bar-top">
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Tìm kiếm tài liệu & hình ảnh (Omni Search)...">
-                    <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </div>
-            
-            <div id="results-container"></div>
-            
-            <div id="content-main">
-                
-                <div class="header-bar">
-                    <div class="title">My Files</div> 
-                </div>
-                
-                <div class="breadcrumb">
-                    {% if page.url == site.baseurl or page.url == site.baseurl + '/' %}
-                        My Files
-                    {% else %}
-                        <a href="{{ site.baseurl }}/">My Files</a> / <span>{{ page.title | remove_first: "Mục lục " }}</span>
-                    {% endif %}
-                </div>
-
-                {{ content }} 
-            </div>
-        </main>
-</div> <footer class="footer">
+    </div> <footer class="footer">
         <p class="bottom-footer-content">© 2025 Data Repository. Powered by Jekyll & GitHub Pages.</p>
     </footer>
 
     <script src="https://unpkg.com/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script>
     <script>
-        // Khởi tạo công cụ tìm kiếm (Đã được chuyển từ khối script thứ hai vào đây)
+        // Khởi tạo công cụ tìm kiếm
         const sjs = SimpleJekyllSearch({
             searchInput: document.getElementById('search-input'),
             resultsContainer: document.getElementById('results-container'),
@@ -73,7 +17,7 @@
             fuzzy: false 
         });
 
-        // Thêm logic để ẩn/hiện nội dung chính khi tìm kiếm (Đã được chuyển vào đây)
+        // Logic ẩn/hiện nội dung chính khi tìm kiếm
         const searchInput = document.getElementById('search-input');
         const contentMain = document.getElementById('content-main');
         
