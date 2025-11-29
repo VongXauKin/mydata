@@ -133,6 +133,16 @@ def generate_index_content(directory_path, relative_level=0):
         else:
             back_link_html = f'<p class="back-link"><a href="{parent_dir_link}">← Quay lại Thư Mục Cha</a> | <a href="{back_link_path}">← Quay lại Trang Chủ</a></p>'
 
+        # Thiết lập Tiêu đề và Permalink
+        if relative_path == '.':
+            title = "Home Page" # Đổi tiêu đề thư mục gốc thành Home Page
+            permalink = "" # Trang chủ (ví dụ: tenmien.com/)
+        else:
+            # Sử dụng tên thư mục làm tiêu đề, định dạng lại
+            title = current_dir_name.replace('-', ' ').title()
+            permalink = relative_path
+    
+        html_content = HTML_TEMPLATE_START
     
     # 3. Quét thư mục và xử lý từng mục
     if os.path.exists(directory_path):
